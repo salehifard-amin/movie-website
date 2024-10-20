@@ -37,6 +37,9 @@ ul {
 .justify-between {
     justify-content: space-between;
 }
+.justify-around {
+    justify-content: space-around;
+}
 .justify-center {
     justify-content: center;
 }
@@ -92,6 +95,12 @@ ul {
 .padding-section {
     padding-top: 120px;
     padding-bottom: 120px;
+}
+.mr-8 {
+    margin-right: 8px;
+}
+.ml-8 {
+    margin-left: 8px;
 }
 .mt-30 {
     margin-top: 30px;
