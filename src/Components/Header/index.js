@@ -11,7 +11,7 @@ import SearchBox from "../SearchBox";
 const Header = ()=> {
   const renderFarm = () => {
     return menuItemsArray.map(({ title }) => {
-      return <Link to="/"> {title} </Link>;
+      return <Link to="/" key={title}> {title} </Link>;
     });
   };
 

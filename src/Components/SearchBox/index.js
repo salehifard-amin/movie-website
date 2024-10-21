@@ -127,8 +127,8 @@ const SearchBox = () => {
   }
   return (
     <SearchContainer>
-      <SearchBar isVisible={isSearchVisible}>
-        <StyledAutoComplete id="aminz"
+      <SearchBar $isVisible={isSearchVisible}>
+        <StyledAutoComplete id="auto-comp"
           style={{
             width: "400px",
             height: "auto",

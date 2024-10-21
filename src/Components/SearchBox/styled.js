@@ -14,20 +14,20 @@ export const Icon = styled.div`
 `;
 
 export const SearchBar = styled.div`
-  max-width: ${({ isVisible }) => (isVisible ? "400px" : "0")};
-  /* opacity: ${({ isVisible }) => (isVisible ? "1" : "0")}; */
+  max-width: ${({ $isVisible }) => ($isVisible ? "400px" : "0")};
+  opacity: ${({ $isVisible }) => ($isVisible ? "1" : "0")};
   transition: max-width 0.4s ease, opacity 0.4s ease;
   overflow: hidden;
 `;
 
 
 export const StyledAutoComplete = styled(AutoComplete)`
-  .ant-select-selector:has(#aminz) {
+  .ant-select-selector:has(#auto-comp) {
     background-color: #cfcfcf ;
     transition: background-color 0.3s ease;
     
     &:focus-within {
-      background-color: #fff; /* Focused background */
+      background-color: #fff;
     }
   }
 

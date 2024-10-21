@@ -12,9 +12,9 @@ import footerImagesArray from "../../Helpers/arrays/footerImages";
 
 const Footer = () => {
   const renderFarm = () => {
-    return footerImagesArray.map(({ image }) => {
+    return footerImagesArray.map(({ image } , index) => {
       return (
-        <li>
+        <li key={index}>
           <Link to={"/"}>
             <img src={image} alt="logo" />
           </Link>
