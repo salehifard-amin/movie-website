@@ -1,8 +1,12 @@
 import styled from "styled-components";
 
+export const Her0Container = styled.div`
+margin-bottom: 30px;
+`
+
 export const HeroStyled = styled.div`
   width: 100%;
-  height: 70vh;
+  height: 75vh;
   font-family: "poppins";
   /* margin-bottom: 30px; */
   li img {
@@ -12,7 +16,7 @@ export const HeroStyled = styled.div`
     object-position: 0 -100px;
   }
   .hero-title {
-    font-size: ${ ({fontProps}) => fontProps };
+    font-size: ${ ({$fontProps}) => $fontProps };
     display: block;
     position: absolute;
     top: 0;

@@ -1,14 +1,14 @@
-import { Fragment } from "react";
 import Footer from "../Footer";
 import Header from "../Header";
+import { MainContainerStyled } from "./MainLayoutStyled";
 
 const MainLayout = ({ children }) => {
   return (
-    <Fragment>
+    <MainContainerStyled>
       <Header />
       {children}
       <Footer />
-    </Fragment>
+    </MainContainerStyled>
   );
 };
 export default MainLayout;

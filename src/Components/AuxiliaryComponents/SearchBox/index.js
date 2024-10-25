@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { createSearchParams, Link, useSearchParams } from "react-router-dom";
 import { Row, Col, AutoComplete } from "antd";
-import { myApi } from "../../Helpers/BaseUrl/baseApi";
-import baseImgUrl from "../../Helpers/BaseUrl/baseImage";
+import { myApi } from "../../../Helpers/BaseUrl/baseApi";
+import baseImgUrl from "../../../Helpers/BaseUrl/baseImage";
 import { SearchOutlined , CloseOutlined } from "@ant-design/icons";
 import { SearchContainer, StyledAutoComplete } from "./styled";
 import { Icon } from "./styled";

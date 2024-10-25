@@ -14,11 +14,11 @@ const Footer = () => {
   const renderFarm = () => {
     return footerImagesArray.map(({ image } , index) => {
       return (
-        <li key={index}>
+        <span key={index}>
           <Link to={"/"}>
             <img src={image} alt="logo" />
           </Link>
-        </li>
+        </span>
       );
     });
   };

@@ -42,7 +42,7 @@ const StyledFooter = styled.div`
     }
 
   }
-  .footer-top .top-right li {
+  .footer-top .top-right span {
     width: 175px;
   }
   .footer-top .top-right a {

@@ -6,7 +6,7 @@ import { HeaderStyled } from "./Styled";
 import { Button } from "antd";
 import NotificationDropdown from "../AuxiliaryComponents/NotificationDropdown";
 import ProfileDropdown from "../AuxiliaryComponents/ProfileDropdown";
-import SearchBox from "../SearchBox";
+import SearchBox from "../AuxiliaryComponents/SearchBox"; 
 
 const Header = ()=> {
   const renderFarm = () => {

@@ -6,17 +6,18 @@ import "swiper/css/pagination";
 import "swiper/css/navigation";
 import GlobalStyle from "../../GlobalStyles";
 import baseImgUrl from "../../Helpers/BaseUrl/baseImage";
-import { Arrow, HeroStyled } from "./styled";
+import { Arrow, Her0Container, HeroStyled } from "./styled";
 import { myApi } from "../../Helpers/BaseUrl/baseApi";
-import HeroGenreMaker from "../AuxiliaryComponents/HeroGenreMaker";
+import GenreMaker from "../AuxiliaryComponents/GenreMaker";
 import { Button } from "antd";
 
 const HeroSlider = () => {
   const [trendList, setTrendList] = useState([]);
+  const [ genreState , setGenreState ] = useState([]) 
 
   useEffect(() => {
     myApi
-      .get("/trending/movie/week")
+      .get("/movie/now_playing")
       .then((res) => {
         setTrendList(res.data.results);
         console.log("result", res.data.results);
@@ -25,24 +26,37 @@ const HeroSlider = () => {
         console.log("Error is:", er);
       });
   }, []);
+  //API call for genres lists,it's passed to GenreMaker comp
+  useEffect(() => {
+    myApi
+      .get("/genre/movie/list")
+      .then((res) => {
+        setGenreState(res.data.genres);
+        console.log('genreApi:', res.data.genres );
+      })
+      .catch((er) => {
+        console.log("Error is:", er);
+      });
+  }, []);
 
   const renderFarm = () => {
+
     return trendList.map(({ title, backdrop_path, genre_ids }, index) => {
-      const titleFontSize = title.length < 20 ? "70px" : "45px";
+    const titleFontSize = title.length < 20 ? "70px" : "45px";
       return (
         <SwiperSlide key={index}>
-          <HeroStyled fontProps={titleFontSize}>
+          <HeroStyled $fontProps={titleFontSize}>
             <li>
               <img src={`${baseImgUrl.original}${backdrop_path}`} alt="title" />
             </li>
             <li className="hero-title">
               <h2>{title}</h2>
-              <li className="hero-genres">
-                <HeroGenreMaker genreId={genre_ids} />
+              <span className="hero-genres">
+                <GenreMaker genreId={genre_ids} genreState={genreState} />
                 <Button className="watch-button" type="primary">
                   Watch Now
                 </Button>
-              </li>
+              </span>
             </li>
           </HeroStyled>
         </SwiperSlide>
@@ -50,7 +64,7 @@ const HeroSlider = () => {
     });
   };
   return (
-    <div className="hero-container">
+    <Her0Container>
       <GlobalStyle />
       <Arrow>
         <Swiper
@@ -69,7 +83,7 @@ const HeroSlider = () => {
           {renderFarm()}
         </Swiper>
       </Arrow>
-    </div>
+    </Her0Container>
   );
 };
 export default HeroSlider;
