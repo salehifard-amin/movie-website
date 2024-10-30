@@ -75,10 +75,10 @@ const HeroSlider = () => {
           className="mySwiper"
           loop={true}
           centeredSlides={true}
-          // autoplay={{
-          //   delay: 4000,
-          //   disableOnInteraction: false,
-          // }}
+          autoplay={{
+            delay: 3000,
+            disableOnInteraction: false,
+          }}
         >
           {renderFarm()}
         </Swiper>

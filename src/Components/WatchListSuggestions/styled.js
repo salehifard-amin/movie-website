@@ -7,6 +7,7 @@ export const MainContainerStyled = styled.div`
   max-width: 1250px;
   margin-left: auto;
   margin-right: auto;
+  margin-bottom: 30px;
   .list-category-title {
     border-bottom: 1px solid rgba(0, 0, 0, 0.5);
     position: relative;
@@ -34,7 +35,7 @@ export const MainContainerStyled = styled.div`
     transition: all 0.25s ease;
     &:hover{
       color: yellowgreen;
-    text-shadow: 0px 0px 10px rgba(200, 200, 200, 1);
+    text-shadow: 0px 0px 5px rgba(200, 200, 200, 0.3);
 
     }
   }
@@ -63,10 +64,6 @@ export const MainContainerStyled = styled.div`
       color: chartreuse;
     }
   }
-  .custom-prev,
-  .custom-next {
-    
-  }
 `;
 
 export const StyledSwiperSlide = styled(SwiperSlide)`
@@ -78,9 +75,8 @@ export const StyledSwiperSlide = styled(SwiperSlide)`
     margin-top: 8px;
     margin-bottom: 15px;
     overflow: hidden;
-    transition: transform 0.25s ease;
+    transition: transform 0.2s ease;
     &:hover {
-
       transform: scale(1.045);
     }
     &:hover .watchList-image ~ .watchList-item-details {
@@ -131,13 +127,5 @@ export const StyledSwiperSlide = styled(SwiperSlide)`
     .vote-average {
       color: orange;
     }
-  }
-`;
-
-export const Arrow = styled.div`
-  .swiper-button-next,
-  .swiper-button-prev {
-    box-sizing: content-box;
-    padding: 10px;
   }
 `;

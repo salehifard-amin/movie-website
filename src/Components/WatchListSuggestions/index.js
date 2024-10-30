@@ -1,22 +1,21 @@
 import { useEffect, useState } from "react";
-import { myApi } from "../../../Helpers/BaseUrl/baseApi";
-import GlobalStyle from "../../../GlobalStyles";
+import { myApi } from "../../Helpers/BaseUrl/baseApi";
+import GlobalStyle from "../../GlobalStyles";
 import { Swiper } from "swiper/react";
 import { MainContainerStyled, StyledSwiperSlide } from "./styled";
-import baseImgUrl from "../../../Helpers/BaseUrl/baseImage";
+import baseImgUrl from "../../Helpers/BaseUrl/baseImage";
 import { Autoplay, Navigation } from "swiper/modules";
 import { LeftCircleOutlined, RightCircleOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 
 const WatchListSuggestions = ({ category, apiAddress }) => {
   const [movieList, setMovieList] = useState([]);
-  console.log("apicheck", apiAddress);
   useEffect(() => {
+    if(!apiAddress){return;}
     myApi
       .get(apiAddress)
       .then((res) => {
         setMovieList(res.data.results);
-        console.log("topRated", res.data.results);
       })
       .catch((err) => {
         console.log(err);
@@ -57,7 +56,6 @@ const WatchListSuggestions = ({ category, apiAddress }) => {
 
   const prevButtonClass = `${category}-prev`;
   const nextButtonClass = `${category}-next`;
-  console.log('next' ,nextButtonClass );
 
   return (
     <MainContainerStyled className="main-container">

@@ -3,24 +3,27 @@ import { createSearchParams, Link, useSearchParams } from "react-router-dom";
 import { Row, Col, AutoComplete } from "antd";
 import { myApi } from "../../../Helpers/BaseUrl/baseApi";
 import baseImgUrl from "../../../Helpers/BaseUrl/baseImage";
-import { SearchOutlined , CloseOutlined } from "@ant-design/icons";
+import { SearchOutlined, CloseOutlined } from "@ant-design/icons";
 import { SearchContainer, StyledAutoComplete } from "./styled";
 import { Icon } from "./styled";
 import { SearchBar } from "./styled";
 
 const SearchBox = () => {
   const [openDropdown, setOpenDropdown] = useState(false);
-  const [queryString, setQueryString] = useSearchParams();
+  const [queryString, setQueryString] = useSearchParams("");
   const [options, setOptions] = useState([]);
   const [isSearchVisible, setIsSearchVisible] = useState(false);
-  const [serachIcon , setSearchIcon ] = useState(true)
-
+  const [serachIcon, setSearchIcon] = useState(true);
   const query = (event) => {
+    if(!event) {
+      setOptions([]);
+      setOpenDropdown(false);
+      setQueryString("");
+    }
     if (event.length >= 3 && event !== null) {
       myApi
-        .get(`/search/multi?query= ${event}`)
+        .get(`/search/movie?query= ${event}`)
         .then((response) => {
-          // document.title = `Search for ${event}`;
           let myOptions = response.data.results.map(
             ({
               id,
@@ -32,6 +35,7 @@ const SearchBox = () => {
               profile_path,
             }) => {
               return {
+                key: id,
                 label: (
                   <Row className="label-holder">
                     <Col>
@@ -46,7 +50,9 @@ const SearchBox = () => {
                           alt={title || name}
                         />
                         <div>
-                          {release_date ? release_date : first_air_date}
+                          {release_date
+                            ? release_date.slice(0, 4)
+                            : first_air_date?.slice(0, 4) || ""}
                         </div>
                         <div className="search-title">
                           {title ? title : name}
@@ -66,7 +72,7 @@ const SearchBox = () => {
           setQueryString(createSearchParams({ key: event }));
         })
         .catch((error) => {
-          return "Wrong address";
+          console.error("API error:", error);
         });
     }
   };
@@ -87,6 +93,7 @@ const SearchBox = () => {
               title,
               profile_path,
             }) => ({
+              key: id,
               label: (
                 <Row className="label-holder">
                   <Col>
@@ -100,7 +107,11 @@ const SearchBox = () => {
                         }
                         alt={title || name}
                       />
-                      <div>{release_date ? release_date : first_air_date}</div>
+                      <div>
+                        {release_date
+                          ? release_date.slice(0, 4)
+                          : first_air_date?.slice(0, 4) || ""}
+                      </div>
                       <div className="search-title">{title ? title : name}</div>
                     </Link>
                   </Col>
@@ -115,20 +126,20 @@ const SearchBox = () => {
           }
         })
         .catch((error) => {
-          return "Wrong address";
+          console.log("API err: ", error);
         });
-      console.log(queryString.get("key"));
     }
-  }, []);
+  }, [queryString]);
 
   const toggleIcon = () => {
-    setIsSearchVisible(!isSearchVisible)
-    setSearchIcon(!serachIcon)
-  }
+    setIsSearchVisible(!isSearchVisible);
+    setSearchIcon(!serachIcon);
+  };
   return (
     <SearchContainer>
       <SearchBar $isVisible={isSearchVisible}>
-        <StyledAutoComplete id="auto-comp"
+        <StyledAutoComplete
+          id="auto-comp"
           style={{
             width: "400px",
             height: "auto",
@@ -142,7 +153,7 @@ const SearchBox = () => {
         />
       </SearchBar>
       <Icon onClick={toggleIcon}>
-        {(serachIcon ? <SearchOutlined /> : <CloseOutlined />)}
+        {serachIcon ? <SearchOutlined /> : <CloseOutlined />}
       </Icon>
     </SearchContainer>
   );
