@@ -1,0 +1,41 @@
+[33mcommit fccd00ab3e411fcb5390804482ffca4e30092b20[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m
+Author: salehifard-amin <amin.salehi.frd@gmail.com>
+Date:   Wed Oct 30 21:17:34 2024 +0330
+
+    actors slide show added to home page
+
+[33mcommit 60fbb7943e875ca8fdc2accbefb2e751544fe7d5[m
+Author: salehifard-amin <amin.salehi.frd@gmail.com>
+Date:   Fri Oct 25 19:43:09 2024 +0330
+
+    adding watch list sectiosns to homePage
+
+[33mcommit 4cbeea931e84addba099bdb69f23a0fa635019f1[m
+Author: salehifard-amin <amin.salehi.frd@gmail.com>
+Date:   Mon Oct 21 22:31:59 2024 +0330
+
+    Hero slider section added
+
+[33mcommit cccd56a2421692fae1d420c25e93835f8e5c769a[m
+Author: salehifard-amin <amin.salehi.frd@gmail.com>
+Date:   Sun Oct 20 11:06:10 2024 +0330
+
+    header and footer are added
+
+[33mcommit ed8dfdc128814dc713c14f2a0d3e8730992352d9[m[33m ([m[1;31morigin/main[m[33m)[m
+Author: salehifard-amin <amin.salehi.frd@gmail.com>
+Date:   Sat Oct 12 21:41:32 2024 +0330
+
+    movie-website project has started
+
+[33mcommit 09d41bb67e2febe6aba51bcec240b417ca8bcec4[m
+Author: salehifard-amin <amin.salehi.frd@gmail.com>
+Date:   Sat Oct 12 18:59:01 2024 +0330
+
+    Initialize project using Create React App
+
+[33mcommit 5d4224e55d4a327810186cdc8afaf08b33d49a35[m
+Author: salehifard-amin <amin.salehi.frd@gmail.com>
+Date:   Sat Oct 12 19:39:04 2024 +0330
+
+    Initial commit
