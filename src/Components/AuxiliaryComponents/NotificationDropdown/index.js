@@ -1,6 +1,5 @@
 import { Badge, Dropdown, Avatar , Button } from "antd";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBell } from "@fortawesome/free-regular-svg-icons";
+import { BellOutlined } from "@ant-design/icons";
 
 const NotificationDropdown = () => {
 
@@ -45,12 +44,12 @@ const NotificationDropdown = () => {
         ),
       })),
   ];
-//pashmaaaaaaam
+
   return (
     <Dropdown menu={{ items }} trigger={['hover']}>
-      <Badge count={notifications.length} offset={[-30, 0]}>
+      <Badge count={notifications.length} offset={[-15, 0]}>
         <Button type="text">
-          <FontAwesomeIcon icon={faBell} className="fa-icon" color="white"/>
+        <BellOutlined style={{color:"#fff",fontSize:"20px"}} />
         </Button>
       </Badge>
     </Dropdown>

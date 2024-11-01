@@ -1,5 +1,3 @@
-import { useEffect, useState } from "react";
-import GlobalStyle from "../../../GlobalStyles";
 
 const GenreMaker = ({ genreId=[] , genreState=[] }) => {
 
@@ -17,7 +15,6 @@ const GenreMaker = ({ genreId=[] , genreState=[] }) => {
 
   return (
     <div className="movie-genres">
-      <GlobalStyle />
       {genreState.length > 0 &&
         genreId.map((callBackId, index) => {
           const FilteredResult = genreState.find(({ id }) => id === callBackId);

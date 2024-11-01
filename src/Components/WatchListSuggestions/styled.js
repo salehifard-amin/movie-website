@@ -36,7 +36,6 @@ export const MainContainerStyled = styled.div`
     &:hover{
       color: yellowgreen;
     text-shadow: 0px 0px 5px rgba(200, 200, 200, 0.3);
-
     }
   }
   .buttons-container {
@@ -69,12 +68,12 @@ export const MainContainerStyled = styled.div`
 export const StyledSwiperSlide = styled(SwiperSlide)`
   .watchList-item-container {
     position: relative;
-    width: 210px;
     height: auto;
     text-align: center;
     margin-top: 8px;
     margin-bottom: 15px;
     overflow: hidden;
+    padding: 2px 10px;
     transition: transform 0.2s ease;
     &:hover {
       transform: scale(1.045);
@@ -82,6 +81,7 @@ export const StyledSwiperSlide = styled(SwiperSlide)`
     &:hover .watchList-image ~ .watchList-item-details {
       bottom:0px;
     }
+    
   }
   .watchList-image {
     width: 100%;
@@ -115,7 +115,7 @@ export const StyledSwiperSlide = styled(SwiperSlide)`
     h3 {
       border-bottom: 3px solid #ffffff12;
       padding-bottom: 10px;
-      font-size: 20px;
+      font-size: 25px;
     }
     .release-date {
       font-size: 14px;

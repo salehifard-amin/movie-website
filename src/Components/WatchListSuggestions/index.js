@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { myApi } from "../../Helpers/BaseUrl/baseApi";
-import GlobalStyle from "../../GlobalStyles";
 import { Swiper } from "swiper/react";
 import { MainContainerStyled, StyledSwiperSlide } from "./styled";
 import baseImgUrl from "../../Helpers/BaseUrl/baseImage";
@@ -10,8 +9,14 @@ import { Link } from "react-router-dom";
 
 const WatchListSuggestions = ({ category, apiAddress }) => {
   const [movieList, setMovieList] = useState([]);
+  const [activeIndex, setActiveIndex] = useState(null);
+
+  const handleSlideChange = (swiper) => setActiveIndex(swiper.realIndex);
+  
+
   useEffect(() => {
-    if(!apiAddress){return;}
+    if (!apiAddress) return;
+
     myApi
       .get(apiAddress)
       .then((res) => {
@@ -24,7 +29,17 @@ const WatchListSuggestions = ({ category, apiAddress }) => {
 
   const renderFarm = () => {
     return movieList.map(
-      ({ title, poster_path, release_date, vote_average ,first_air_date , name }, index) => {
+      (
+        {
+          title,
+          poster_path,
+          release_date,
+          vote_average,
+          first_air_date,
+          name,
+        },
+        index
+      ) => {
         return (
           <StyledSwiperSlide key={index}>
             <Link to={"/movie"}>
@@ -34,10 +49,22 @@ const WatchListSuggestions = ({ category, apiAddress }) => {
                   src={`${baseImgUrl.original}${poster_path}`}
                   alt={title}
                 />
-                <div className="watchList-item-details">
-                  <h3>{title? title : name}</h3>
+                <div
+                  className="watchList-item-details"
+                  style={{
+                    bottom:
+                      window.innerWidth <= 992 && activeIndex === index
+                        ? "0px"
+                        : "",
+                  }}
+                >
+                  <h3>{title || name}</h3>
                   <div>
-                    <p className="release-date">{release_date? release_date.slice(0, 4) : first_air_date.slice(0, 4)}</p>
+                    <p className="release-date">
+                      {release_date
+                        ? release_date.slice(0, 4)
+                        : first_air_date.slice(0, 4)}
+                    </p>
                   </div>
                   <div>
                     <span className="vote-title">TMDB votes: </span>
@@ -59,11 +86,9 @@ const WatchListSuggestions = ({ category, apiAddress }) => {
 
   return (
     <MainContainerStyled className="main-container">
-      <GlobalStyle />
       <Link to={"movies"} className="list-category-title">
-        <h2>{category.replace(/-/g , " ")}</h2>
+        <h2>{category.replace(/-/g, " ")}</h2>
       </Link>
-
       <div className="buttons-container">
         <button className={prevButtonClass}>
           <LeftCircleOutlined />
@@ -72,8 +97,8 @@ const WatchListSuggestions = ({ category, apiAddress }) => {
           <RightCircleOutlined />
         </button>
       </div>
-
       <Swiper
+        onSlideChange={handleSlideChange}
         spaceBetween={30}
         slidesPerView={5}
         navigation={{
@@ -85,6 +110,23 @@ const WatchListSuggestions = ({ category, apiAddress }) => {
         className="mySwiper"
         loop={true}
         centeredSlides={true}
+        breakpoints={{
+          0: {
+            slidesPerView: 1,
+          },
+          576: {
+            slidesPerView: 2,
+          },
+          768: {
+            slidesPerView: 3,
+          },
+          992: {
+            slidesPerView: 4,
+          },
+          1150: {
+            slidesPerView: 5,
+          },
+        }}
         // autoplay={{
         //   delay: 4000,
         //   disableOnInteraction: false,

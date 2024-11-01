@@ -1,6 +1,5 @@
 import {  Dropdown, Button } from "antd";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser } from "@fortawesome/free-regular-svg-icons";
+import { UserOutlined } from "@ant-design/icons";
 
 const ProfileDropdown = () => {
   const notifications = [
@@ -17,7 +16,7 @@ const ProfileDropdown = () => {
   return (
     <Dropdown menu={{ items: notifications }} trigger={["hover"]}>
         <Button type="text">
-          <FontAwesomeIcon icon={faUser} className="fa-icon" color="white" />
+        <UserOutlined style={{color:"#fff",fontSize:"20px"}} />
         </Button>
     </Dropdown>
   );

@@ -1,11 +1,15 @@
 import { createGlobalStyle } from "styled-components";
 
 const GlobalStyle = createGlobalStyle`
+html {
+    overflow-x: hidden;
 
+}
 body {
     margin: 0;
     padding: 0;
     font-family: "poppins";
+    overflow-x: hidden;
 }
 *,*::after,
 *::before {

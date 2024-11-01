@@ -1,23 +1,22 @@
-import { Button } from "antd";
-import GlobalStyle from "../../GlobalStyles";
-import StyledFooter from "./styled";
+import { Button, Popover } from "antd";
+import {StyledFooter} from "./styled";
 import { Link } from "react-router-dom";
 import {
-  FacebookOutlined,
   TwitterOutlined,
   LinkedinOutlined,
   InstagramOutlined,
+  GithubOutlined,
 } from "@ant-design/icons";
 import footerImagesArray from "../../Helpers/arrays/footerImages";
 
 const Footer = () => {
   const renderFarm = () => {
-    return footerImagesArray.map(({ image } , index) => {
+    return footerImagesArray.map(({ image }, index) => {
       return (
         <span key={index}>
-          <Link to={"/"}>
+          <a href="/">
             <img src={image} alt="logo" />
-          </Link>
+          </a>
         </span>
       );
     });
@@ -25,37 +24,41 @@ const Footer = () => {
 
   return (
     <StyledFooter>
-      <GlobalStyle />
       <div className="container">
         <div className="footer-top flex justify-around align-center">
           <div className="top-left">
             <Link to={"/"}>
-              <img src="./images/logo.png" alt="" />
+              <img src="./images/logo.png" alt="logo" />
             </Link>
             <p>
               Eiusmod tempor incididunt ut la abore et minim ven exerc itation
               ulla mco lboris naliquip ex ea comm.
             </p>
             <div className="logos">
-              <a href="https://www.facebook.com/">
-                <FacebookOutlined />
+              <a href="https://github.com/salehifard-amin" target="_blank">
+              <GithubOutlined />
               </a>
-              <a href="https://x.com">
+              <a href="https://x.com" target="_blank">
                 <TwitterOutlined />
               </a>
-              <a href="https://www.linkedin.com/feed/"> 
+              <a href="https://www.linkedin.com/feed/" target="_blank">
                 <LinkedinOutlined />
               </a>
-              <a href="https://www.instagram.com">
+              <a href="https://www.instagram.com" target="_blank">
                 <InstagramOutlined />
               </a>
             </div>
           </div>
-          <ul className="top-right flex justify-between align-center">{renderFarm()}</ul>
+          <ul className="top-right flex justify-between align-center">
+            {renderFarm()}
+          </ul>
         </div>
         <div className="footer-bottom flex justify-around align-center">
           <div className="bottom-left ">
             <p>Copyright ©2022 All rights reserved</p>
+            <p>
+              Developed by <strong>AMIN Salehi</strong>
+            </p>
           </div>
           <div className="bottom-right flex justify-around align-center">
             <div className="login-text">
@@ -63,9 +66,18 @@ const Footer = () => {
                 Already have an Account? <Link to={"/"}>LOGIN</Link>
               </p>
             </div>
-            <Button type="primary" danger className="button">
-              Become a Member
-            </Button>
+            <Popover
+              content={
+                <strong style={{ color: "#950000", fontSize: "12px" }}>
+                  This is Demo version
+                </strong>
+              }
+              trigger={"click"}
+            >
+              <Button type="primary" danger className="button">
+                Become a Member
+              </Button>
+            </Popover>
           </div>
         </div>
       </div>

@@ -4,9 +4,8 @@ import { Navigation, Autoplay } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
-import GlobalStyle from "../../GlobalStyles";
 import baseImgUrl from "../../Helpers/BaseUrl/baseImage";
-import { Arrow, Her0Container, HeroStyled } from "./styled";
+import { Arrow, HeroContainer, HeroStyled } from "./styled";
 import { myApi } from "../../Helpers/BaseUrl/baseApi";
 import GenreMaker from "../AuxiliaryComponents/GenreMaker";
 import { Button } from "antd";
@@ -14,7 +13,7 @@ import { Button } from "antd";
 const HeroSlider = () => {
   const [trendList, setTrendList] = useState([]);
   const [ genreState , setGenreState ] = useState([]) 
-
+ 
   useEffect(() => {
     myApi
       .get("/movie/now_playing")
@@ -26,7 +25,7 @@ const HeroSlider = () => {
         console.log("Error is:", er);
       });
   }, []);
-  //API call for genres lists,it's passed to GenreMaker comp
+
   useEffect(() => {
     myApi
       .get("/genre/movie/list")
@@ -64,8 +63,7 @@ const HeroSlider = () => {
     });
   };
   return (
-    <Her0Container>
-      <GlobalStyle />
+    <HeroContainer>
       <Arrow>
         <Swiper
           spaceBetween={50}
@@ -83,7 +81,7 @@ const HeroSlider = () => {
           {renderFarm()}
         </Swiper>
       </Arrow>
-    </Her0Container>
+    </HeroContainer>
   );
 };
 export default HeroSlider;

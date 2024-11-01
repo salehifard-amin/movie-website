@@ -4,7 +4,6 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, EffectCards, Navigation } from "swiper/modules";
 import { Link } from "react-router-dom";
 import baseImgUrl from "../../Helpers/BaseUrl/baseImage";
-import GlobalStyle from "../../GlobalStyles";
 import { ActorsDetailsStyled, ActorStyledContainer } from "./styled";
 import "swiper/css";
 import "swiper/css/navigation";
@@ -59,20 +58,35 @@ const ActorsSlideShow = () => {
   };
   return (
     <ActorStyledContainer>
-      <GlobalStyle />
       <Swiper
         spaceBetween={30}
         slidesPerView={6}
-        navigation
         modules={[Navigation, Autoplay]}
         className="mySwiper"
         loop={true}
         centeredSlides={true}
-        // autoplay={{
-        //   delay: 0,
-        //   disableOnInteraction: false,
-        // }}
-        // speed={3000}
+        autoplay={{
+          delay: 0,
+          disableOnInteraction: false,
+        }}
+        speed={8000}
+        breakpoints={{
+          0: {
+            slidesPerView: 2,
+          },
+          576: {
+            slidesPerView: 3,
+          },
+          768: {
+            slidesPerView: 4,
+          },
+          992: {
+            slidesPerView: 5,
+          },
+          1150: {
+            slidesPerView: 6,
+          },
+        }}
       >
         {renderActorSlides()}
       </Swiper>
