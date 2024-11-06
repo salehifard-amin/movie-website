@@ -17,9 +17,6 @@ export const HeroStyled = styled.div`
   @media screen and (max-width: ${large}) {
     height: 45vh;
   }
-  @media screen and (max-width: ${medium}) {
-    height: 38vh;
-  }
   @media screen and (orientation: landscape) {
     height: 75vh;
   }

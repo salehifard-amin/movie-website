@@ -14,7 +14,7 @@ const ActorsSlideShow = () => {
 
   useEffect(() => {
     myApi
-      .get(`/person/popular?page=${(Math.random() * 50).toFixed()}`)
+      .get(`/person/popular?page=${((Math.random() * 20) +1).toFixed()}`)
       .then((res) => {
         setActorsList(res.data.results);
       })
@@ -24,9 +24,9 @@ const ActorsSlideShow = () => {
   }, []);
 
   const renderActorDetails = (known_for) => {
-    return known_for.map(({ title }) => (
+    return known_for.map(({ id , title , release_date }) => (
       <ActorsDetailsStyled>
-        <Link className="known-for-item" key={title}>
+        <Link  to={`/contents/${release_date ? "movie" : "tv"}/${id}`} className="known-for-item" key={title}>
           <p>{title}</p>
         </Link>
       </ActorsDetailsStyled>
@@ -43,6 +43,7 @@ const ActorsSlideShow = () => {
               title={<span style={{ color: "#daf58c" }}>{`${name} is known for:`}</span>}
               placement="top"
               color="rgba(0, 0, 0, 0.75)"
+              trigger={"hover"}
             >
               <div className="actor-item">
                 <img src={`${baseImgUrl.w185}${profile_path}`} alt={name} />

@@ -1,5 +1,6 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import HomePage from "../../Pages/HomePage";
+import SingleMovie from "../../Pages/SingleMedia";
 
 
 export default function MyRouter() {
@@ -7,6 +8,10 @@ export default function MyRouter() {
         {
             path: "/",
             element: <HomePage />,
+        },
+        {
+            path: "/contents/:contentType/:mediaId",
+            element: <SingleMovie />,
         },
     ] )
     return <RouterProvider router = {newRouter} />

@@ -83,6 +83,10 @@ export const StyledFooter = styled.div`
   }
   .bottom-right {
     gap: 40px;
+    padding-right: 12px;
+    .button {
+      width: 130px;
+    }
   }
   .bottom-right .login-text p a {
     font-weight: bold;

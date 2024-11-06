@@ -9,17 +9,25 @@ import { Arrow, HeroContainer, HeroStyled } from "./styled";
 import { myApi } from "../../Helpers/BaseUrl/baseApi";
 import GenreMaker from "../AuxiliaryComponents/GenreMaker";
 import { Button } from "antd";
+import { Link } from "react-router-dom";
 
 const HeroSlider = () => {
   const [trendList, setTrendList] = useState([]);
-  const [ genreState , setGenreState ] = useState([]) 
- 
+  const [genreState, setGenreState] = useState([]);
+  const [backdropSize, setBackdropSize] = useState("original");
+
+  useEffect(() => {
+    if (window.innerWidth <= 768) {
+      setBackdropSize("w780");
+    }  else {
+      setBackdropSize("original");
+    }
+  }, []);
   useEffect(() => {
     myApi
-      .get("/movie/now_playing")
+      .get(`discover/movie?page=${((Math.random() * 9) +1).toFixed()}&vote_count.gte=8000`)
       .then((res) => {
         setTrendList(res.data.results);
-        console.log("result", res.data.results);
       })
       .catch((er) => {
         console.log("Error is:", er);
@@ -31,7 +39,6 @@ const HeroSlider = () => {
       .get("/genre/movie/list")
       .then((res) => {
         setGenreState(res.data.genres);
-        console.log('genreApi:', res.data.genres );
       })
       .catch((er) => {
         console.log("Error is:", er);
@@ -39,22 +46,23 @@ const HeroSlider = () => {
   }, []);
 
   const renderFarm = () => {
-
-    return trendList.map(({ title, backdrop_path, genre_ids }, index) => {
-    const titleFontSize = title.length < 20 ? "70px" : "45px";
+    return trendList.map(({ id, title, backdrop_path, genre_ids ,release_date }, index) => {
+      const titleFontSize = title.length < 20 ? "70px" : "45px";
       return (
         <SwiperSlide key={index}>
           <HeroStyled $fontProps={titleFontSize}>
             <li>
-              <img src={`${baseImgUrl.original}${backdrop_path}`} alt="title" />
+              <img src={`${baseImgUrl[backdropSize]}${backdrop_path}`} alt="title" />
             </li>
             <li className="hero-title">
               <h2>{title}</h2>
               <span className="hero-genres">
                 <GenreMaker genreId={genre_ids} genreState={genreState} />
-                <Button className="watch-button" type="primary">
-                  Watch Now
-                </Button>
+                <Link to={`/contents/${release_date ? "movie" : "tv"}/${id}`}>
+                  <Button className="watch-button" type="primary">
+                    Watch Now
+                  </Button>
+                </Link>
               </span>
             </li>
           </HeroStyled>

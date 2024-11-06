@@ -39,7 +39,7 @@ const SearchBox = () => {
                 label: (
                   <Row className="label-holder">
                     <Col>
-                      <Link to={`/movies/${id}`}>
+                      <Link to={`/contents/${release_date ? "movie" : "tv"}/${id}`}>
                         <img
                           className="label-img"
                           src={

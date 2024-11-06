@@ -39,7 +39,7 @@ export const SubscribeStyled = styled.div`
         font-size: 70px;
       }
       @media screen and (max-width: ${small}) {
-        font-size: 55px;
+        font-size: 50px;
       }
       @media screen and (orientation: landscape) {
         font-size: 55px;
@@ -68,14 +68,20 @@ export const SubscribeStyled = styled.div`
     }
   }
 
-  button {
+  .button {
     display: block;
     margin-top: 50px;
     font-size: 25px;
     font-weight: bold;
     height: auto;
+    @media screen and (max-width: ${small}) {
+          font-size: 20px;
+    margin-top: 20px;
+
+        }
     @media screen and (orientation: landscape) {
         margin-top: 10px;
+        
       }
   }
 `;

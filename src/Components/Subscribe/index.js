@@ -1,5 +1,6 @@
 import { Button, Popover } from "antd";
 import { SubscribeStyled } from "./styled";
+import MessageAntd from "../Headers/MessageAntd";
 
 const Subscribe = () => {
   return (
@@ -12,14 +13,18 @@ const Subscribe = () => {
             <h2 className="price-lined">49.99$</h2>
           </div>
         </div>
-        <Popover
-        content={<strong style={{color:"#950000",fontSize:"14px"}}>This is Demo version</strong>}
-        trigger={"click"}
-        >
-          <Button size="large" type="primary" danger>
-            Subsribe Now
-          </Button>
-        </Popover>
+           <MessageAntd>
+              {(showAlert) => (
+                <Button
+                  type="primary"
+                  onClick={showAlert}
+                  danger
+                  className="button"
+                >
+                  Subscribe Now
+                </Button>
+              )}
+            </MessageAntd>
       </div>
     </SubscribeStyled>
   );

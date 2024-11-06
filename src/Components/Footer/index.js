@@ -1,5 +1,5 @@
 import { Button, Popover } from "antd";
-import {StyledFooter} from "./styled";
+import { StyledFooter } from "./styled";
 import { Link } from "react-router-dom";
 import {
   TwitterOutlined,
@@ -8,6 +8,7 @@ import {
   GithubOutlined,
 } from "@ant-design/icons";
 import footerImagesArray from "../../Helpers/arrays/footerImages";
+import MessageAntd from "../Headers/MessageAntd";
 
 const Footer = () => {
   const renderFarm = () => {
@@ -22,13 +23,17 @@ const Footer = () => {
     });
   };
 
+  const alert = () => {
+    console.log("Button clicked!");
+  };
+
   return (
     <StyledFooter>
       <div className="container">
         <div className="footer-top flex justify-around align-center">
           <div className="top-left">
             <Link to={"/"}>
-              <img src="./images/logo.png" alt="logo" />
+              <img src="/images/logo.png" alt="logo" />
             </Link>
             <p>
               Eiusmod tempor incididunt ut la abore et minim ven exerc itation
@@ -36,7 +41,7 @@ const Footer = () => {
             </p>
             <div className="logos">
               <a href="https://github.com/salehifard-amin" target="_blank">
-              <GithubOutlined />
+                <GithubOutlined />
               </a>
               <a href="https://x.com" target="_blank">
                 <TwitterOutlined />
@@ -66,18 +71,19 @@ const Footer = () => {
                 Already have an Account? <Link to={"/"}>LOGIN</Link>
               </p>
             </div>
-            <Popover
-              content={
-                <strong style={{ color: "#950000", fontSize: "12px" }}>
-                  This is Demo version
-                </strong>
-              }
-              trigger={"click"}
-            >
-              <Button type="primary" danger className="button">
-                Become a Member
-              </Button>
-            </Popover>
+
+            <MessageAntd>
+              {(showAlert) => (
+                <Button
+                  type="primary"
+                  onClick={showAlert}
+                  danger
+                  className="button"
+                >
+                  Become a Member
+                </Button>
+              )}
+            </MessageAntd>
           </div>
         </div>
       </div>

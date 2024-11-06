@@ -10,9 +10,7 @@ import { Link } from "react-router-dom";
 const WatchListSuggestions = ({ category, apiAddress }) => {
   const [movieList, setMovieList] = useState([]);
   const [activeIndex, setActiveIndex] = useState(null);
-
   const handleSlideChange = (swiper) => setActiveIndex(swiper.realIndex);
-  
 
   useEffect(() => {
     if (!apiAddress) return;
@@ -26,11 +24,13 @@ const WatchListSuggestions = ({ category, apiAddress }) => {
         console.log(err);
       });
   }, []);
-
+  
+  
   const renderFarm = () => {
     return movieList.map(
       (
         {
+          id,
           title,
           poster_path,
           release_date,
@@ -40,24 +40,17 @@ const WatchListSuggestions = ({ category, apiAddress }) => {
         },
         index
       ) => {
+        const itemStyle = {bottom: window.innerWidth <= 992 && activeIndex === index ? "0px" : ""}
         return (
           <StyledSwiperSlide key={index}>
-            <Link to={"/movie"}>
+            <Link to={`/contents/${release_date ? "movie" : "tv"}/${id}`}>
               <div className="watchList-item-container">
                 <img
                   className="watchList-image"
-                  src={`${baseImgUrl.original}${poster_path}`}
+                  src={`${baseImgUrl.w342}${poster_path}`}
                   alt={title}
                 />
-                <div
-                  className="watchList-item-details"
-                  style={{
-                    bottom:
-                      window.innerWidth <= 992 && activeIndex === index
-                        ? "0px"
-                        : "",
-                  }}
-                >
+                <div className="watchList-item-details" style={itemStyle}>
                   <h3>{title || name}</h3>
                   <div>
                     <p className="release-date">
@@ -127,10 +120,6 @@ const WatchListSuggestions = ({ category, apiAddress }) => {
             slidesPerView: 5,
           },
         }}
-        // autoplay={{
-        //   delay: 4000,
-        //   disableOnInteraction: false,
-        // }}
       >
         {renderFarm()}
       </Swiper>

@@ -1,5 +1,8 @@
 import styled from "styled-components";
 import { SwiperSlide } from "swiper/react";
+import { primaryTheme } from "../../GlobalStyles/themes";
+
+const {small} = primaryTheme.viewports
 
 export const MainContainerStyled = styled.div`
   width: 100%;
@@ -115,7 +118,10 @@ export const StyledSwiperSlide = styled(SwiperSlide)`
     h3 {
       border-bottom: 3px solid #ffffff12;
       padding-bottom: 10px;
-      font-size: 25px;
+      font-size: 18px;
+      @media screen and ( max-width:${small} ) {
+        font-size: 26px;
+      }
     }
     .release-date {
       font-size: 14px;

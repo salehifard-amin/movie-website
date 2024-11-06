@@ -1,10 +1,11 @@
 import { Link } from "react-router-dom";
-import menuItemsArray from "../../Helpers/arrays/headerMenu";
+import menuItemsArray from "../../../Helpers/arrays/headerMenu";
 import { HeaderStyled } from "./Styled";
 import { Button, Popover } from "antd";
-import NotificationDropdown from "../AuxiliaryComponents/NotificationDropdown";
-import ProfileDropdown from "../AuxiliaryComponents/ProfileDropdown";
-import SearchBox from "../AuxiliaryComponents/SearchBox";
+import NotificationDropdown from "../../AuxiliaryComponents/NotificationDropdown";
+import ProfileDropdown from "../../AuxiliaryComponents/ProfileDropdown";
+import SearchBox from "../../AuxiliaryComponents/SearchBox";
+import MessageAntd from "../MessageAntd";
 
 const Header = () => {
   const renderFarm = () => {
@@ -19,8 +20,8 @@ const Header = () => {
 
   return (
     <div className="header">
-      <HeaderStyled className="container flex justify-between align-center">
-        <div className="left-menu flex justify-between align-center">
+      <HeaderStyled className="container flex justify-between " >
+        <div className="left-menu flex justify-between ">
           <Link to="/" className="logo">
             <img src="./images/logo.png" />
           </Link>
@@ -33,20 +34,20 @@ const Header = () => {
             <NotificationDropdown />
             <div className="pipe"></div>
             <ProfileDropdown />
-            <Popover
-              content={
-                <strong style={{ color: "#950000", fontSize: "12px" }}>
-                  This is Demo version
-                </strong>
-              }
-              trigger={"click"}
-            >
-              <Button className="header-button" type="primary" danger>
-                Sign In
-              </Button>
-            </Popover>
+            <MessageAntd>
+              {(showAlert) => (
+                <Button
+                  type="primary"
+                  onClick={showAlert}
+                  danger
+                  className="button"
+                >
+                 Sign in
+                </Button>
+              )}
+            </MessageAntd>
           </div>
-          <div class="hamburger-menu flex flex-column justify-between">
+          <div className="hamburger-menu flex flex-column justify-between">
             <span></span>
             <span></span>
             <span></span>
