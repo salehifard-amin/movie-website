@@ -14,13 +14,13 @@ import { Link } from "react-router-dom";
 const HeroSlider = () => {
   const [trendList, setTrendList] = useState([]);
   const [genreState, setGenreState] = useState([]);
-  const [backdropSize, setBackdropSize] = useState("original");
+  const [backdropSize, setBackdropSize] = useState("w1280");
 
   useEffect(() => {
     if (window.innerWidth <= 768) {
       setBackdropSize("w780");
     }  else {
-      setBackdropSize("original");
+      setBackdropSize("w1280");
     }
   }, []);
   useEffect(() => {
@@ -52,7 +52,7 @@ const HeroSlider = () => {
         <SwiperSlide key={index}>
           <HeroStyled $fontProps={titleFontSize}>
             <li>
-              <img src={`${baseImgUrl[backdropSize]}${backdrop_path}`} alt="title" />
+              <img src={`${baseImgUrl[backdropSize]}${backdrop_path}`} alt={title} />
             </li>
             <li className="hero-title">
               <h2>{title}</h2>

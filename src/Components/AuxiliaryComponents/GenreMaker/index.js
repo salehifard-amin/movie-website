@@ -1,7 +1,7 @@
 const GenreMaker = ({ genreId = [], genreState = [] }) => {
 
   return (
-    <div className="movie-genres">
+    <p className="movie-genres">
       {genreState.length > 0 &&
         genreId.map((item, index) => {
           const singleId = typeof item === "object" ? item.id : item;
@@ -16,7 +16,7 @@ const GenreMaker = ({ genreId = [], genreState = [] }) => {
             </span>
           );
         })}
-    </div>
+    </p>
   );
 };
 export default GenreMaker;

@@ -10,11 +10,11 @@ import { Link } from "react-router-dom";
 const WatchListSuggestions = ({ category, apiAddress }) => {
   const [movieList, setMovieList] = useState([]);
   const [activeIndex, setActiveIndex] = useState(null);
+
   const handleSlideChange = (swiper) => setActiveIndex(swiper.realIndex);
 
   useEffect(() => {
     if (!apiAddress) return;
-
     myApi
       .get(apiAddress)
       .then((res) => {
@@ -27,6 +27,7 @@ const WatchListSuggestions = ({ category, apiAddress }) => {
   
   
   const renderFarm = () => {
+    if(!movieList) return;
     return movieList.map(
       (
         {

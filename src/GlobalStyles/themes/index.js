@@ -29,13 +29,20 @@ export const primaryTheme = {
         normal: jsRgba(194, 148, 67),
         assistiveWarning: jsRgba(243, 195, 9),
       },
+      gray: {
+        lightest: jsRgba(245, 245, 245),
+        light:jsRgba(229, 229, 229),
+        normal: jsRgba(220, 220, 220),
+        dark: jsRgba(211, 211, 211),
+        darker: jsRgba(192, 192, 192),
+        silver: jsRgba(169, 169, 169),
+        darkest: jsRgba(105, 105, 105),
+      },
       white: '#ffffff',
       black: '#000000',
       transparent: 'transparent',
     },
     styles: {
-      //i placed the keys in "" to make the error go,
-      //what er?lose the "" to see
       shadow: "0 2px 4px 0 ${jsRgba(0, 0, 0, 0.05)}",
       divider: "1px solid ${jsRgba(28, 28, 28, 0.1)}",
       shadow: "1px solid ${jsRgba(28, 28, 28, 0.1)}",

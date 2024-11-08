@@ -2,38 +2,54 @@ import { useEffect, useState } from "react";
 import SecondaryLayout from "../../Components/Layouts/SecondaryLayout";
 import { myApi } from "../../Helpers/BaseUrl/baseApi";
 import { Link, useParams } from "react-router-dom";
-import { Progress, Skeleton } from "antd";
+import { Button, Divider, Drawer, Progress, Skeleton, Spin, Tabs } from "antd";
 import baseImgUrl from "../../Helpers/BaseUrl/baseImage";
-import { StyledSingleMedia } from "./styled";
+import { StyledSingleMedia, SwiperSlideStyled } from "./styled";
 import GenreMaker from "../../Components/AuxiliaryComponents/GenreMaker";
 import RuntimeConverter from "../../Helpers/RuntimeConverter";
+import BackdropOverlay from "../../Components/AuxiliaryComponents/BackdropOverlay";
+import { PlayCircleOutlined } from "@ant-design/icons";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation } from "swiper/modules";
+import "swiper/css/navigation";
+import "swiper/css";
 
 const SingleMedia = () => {
   const [content, setContent] = useState({});
+  const [drawerLoading, setDrawerLoading] = useState(true);
   const [loading, setLoading] = useState(true);
   const [genreState, setGenreState] = useState([]);
-  const [backdropSize, setBackdropSize] = useState("original");
+  const [backdropSize, setBackdropSize] = useState("w1280");
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [selectedActor, setSelectedActor] = useState(null);
+  const [actorDetails, setActorDetails] = useState({});
+  const [imageSrc, setImageSrc] = useState("");
   const { contentType, mediaId } = useParams();
 
   useEffect(() => {
-    if (window.innerWidth <= 768) {
-      setBackdropSize("w780");
-    }  else {
-      setBackdropSize("original");
+    if (content.backdrop_path && content.poster_path) {
+      const updateImageSrc = () => {
+        const isMobile = window.innerWidth <= 768;
+        setBackdropSize(isMobile ? "w780" : "w1280");
+        setImageSrc(isMobile ? content.poster_path : content.backdrop_path);
+        console.log("backdrop", content.backdrop_path);
+      };
+      updateImageSrc();
     }
-  }, []);
+  }, [content.backdrop_path, content.poster_path]);
 
   useEffect(() => {
     window.scrollTo({
-      top:0,
+      top: 0,
       left: 0,
-      behavior: 'smooth',
-    }); 
+      behavior: "smooth",
+    });
     if (!mediaId) return;
+    setLoading(true);
     const endpoint =
       contentType === "movie"
-        ? `/movie/${mediaId}?append_to_response=credits,recommendations`
-        : `/tv/${mediaId}?append_to_response=credits,recommendations`;
+        ? `/movie/${mediaId}?append_to_response=credits,recommendations,reviews`
+        : `/tv/${mediaId}?append_to_response=credits,recommendations,reviews`;
     myApi
       .get(endpoint)
       .then((res) => {
@@ -60,10 +76,26 @@ const SingleMedia = () => {
       });
   }, []);
 
+  useEffect(() => {
+    if (!selectedActor) return;
+    myApi
+      .get(`/person/${selectedActor.id}`)
+      .then((res) => {
+        setActorDetails(res.data);
+      })
+      .catch((er) => {
+        console.log("Error is:", er);
+      })
+      .finally(() => {
+        setDrawerLoading(false);
+      });
+  }, [selectedActor]);
+
   const {
     title,
     name,
     backdrop_path,
+    poster_path,
     release_date,
     first_air_date,
     genres,
@@ -76,11 +108,33 @@ const SingleMedia = () => {
     number_of_seasons,
     vote_average,
     recommendations,
+    reviews,
+    imdb_id,
   } = content;
-
   const publishDate = release_date ?? first_air_date;
   const duration = runtime ? runtime : episode_run_time;
   const ratingsGenerator = Math.floor(vote_average * 10);
+
+  const userReviews = () => {
+    if (!reviews || !reviews.results) return [];
+    return reviews.results.slice(0, 3).map((item, index) => ({
+      key: index + 1,
+      label: item.author,
+      children: (
+        <div className="review-item">
+          {item.content.length > 400 ? (
+            <span>
+              {item.content.slice(0, 400)}...  <a href={item.url} target="_blank" rel="noopener noreferrer">
+                continue reading
+              </a>
+            </span>
+          ) : (
+            item.content
+          )}
+        </div>
+      ),
+    }));
+  };
 
   const topCastList = () => {
     if (!credits || !credits.cast) return [];
@@ -88,12 +142,30 @@ const SingleMedia = () => {
       .sort((a, b) => b.popularity - a.popularity)
       .slice(0, 6)
       .map((item, index) => (
-        <div key={index}>
-          <img src={`${baseImgUrl.w92}${item.profile_path}`} />
-          <h2> {item.name} </h2>
-          <p> {item.character} </p>
-        </div>
+        <SwiperSlideStyled>
+          <div
+            key={index}
+            className="actor-item"
+            onClick={() => openActorDrawer(item)}
+          >
+            <img src={`${baseImgUrl.w185}${item.profile_path}`} />
+            <p className="actor-name"> {item.name} </p>
+            <p className="actor-character"> {item.character} </p>
+          </div>
+        </SwiperSlideStyled>
       ));
+  };
+
+  const openActorDrawer = (actor) => {
+    setSelectedActor(actor);
+    setDrawerOpen(true);
+  };
+
+  const closeActorDrawer = () => {
+    setDrawerOpen(false);
+    setSelectedActor(null);
+    setActorDetails({});
+    setDrawerLoading(true);
   };
 
   const recommendedMedia = () => {
@@ -102,7 +174,10 @@ const SingleMedia = () => {
       .sort((a, b) => b.popularity - a.popularity)
       .slice(0, 6)
       .map((item, index) => (
-        <Link to={`/contents/${release_date ? "movie" : "tv"}/${item.id}`} key={index}>
+        <Link
+          to={`/contents/${release_date ? "movie" : "tv"}/${item.id}`}
+          key={index}
+        >
           <img src={`${baseImgUrl.w154}${item.poster_path}`} />
           <h2> {item.title ? item.title : item.name} </h2>
           <h3>
@@ -120,15 +195,19 @@ const SingleMedia = () => {
       const director = credits?.crew?.find((item) => {
         return item.department === "Directing" && item.job === "Director";
       });
-      return <span>Director: {director ? director.name : "N/A"}</span>;
+      return (
+        <p>
+          <span>Director: </span> {director ? director.name : "N/A"}
+        </p>
+      );
     }
     if (contentType === "tv") {
       if (content.created_by && content.created_by.length > 0) {
         return (
-          <span>
-            Created by:
+          <p>
+            <span>Created by: </span>
             {content.created_by.map((creator) => creator.name).join(", ")}
-          </span>
+          </p>
         );
       } else {
         return <span>Creator not available</span>;
@@ -137,56 +216,161 @@ const SingleMedia = () => {
     return <span>Director/Creator not available</span>;
   };
 
+  const titleFontSize = (title || name)?.length < 22 ? "70px" : "45px";
+
   return (
     <SecondaryLayout>
-      <StyledSingleMedia>
+      <StyledSingleMedia $fontProps={titleFontSize}>
+        <BackdropOverlay />
+        <div className="background-wrapper"></div>
         <div className="backdrop-container">
           {loading ? (
-            <Skeleton.Image />
+            <Spin size="large" className="spin" />
           ) : (
             <img
               className="backdrop"
-              src={`${baseImgUrl[backdropSize]}${backdrop_path}`}
+              src={`${baseImgUrl[backdropSize]}${imageSrc}`}
               alt={title || name}
             />
           )}
         </div>
-        <div>
-          <h1>{title || name}</h1>
-          <h3> {publishDate?.slice(0, 4)}</h3>
-          <h3>
-            <GenreMaker genreId={genres} genreState={genreState} />
-          </h3>
-          <h3>
-            <RuntimeConverter timeSpan={duration} />
-          </h3>
-          <h3> {renderDirector()} </h3>
-          {contentType !== "movie" && (
-            <h4>
-              {number_of_seasons > 1
-                ? `${number_of_seasons} seasons`
-                : `${number_of_seasons} season`}
-              / {number_of_episodes} episodes :
-              {in_production ? "In production" : "Finished"}
-            </h4>
-          )}
-          <span>
-            <span> Average rating </span>
-            <Progress
-              type="dashboard"
-              steps={10}
-              percent={ratingsGenerator}
-              trailColor="rgba(250, 255, 254, 0.2)"
-              strokeWidth={20}
-              gapPosition="left"
-              size={80}
-            />
-          </span>
-          <span> {topCastList()} </span>
-          <p> {overview} </p>
-          {recommendedMedia()}
+        <div className="hero-contents">
+          <h1 className="main-title">{title || name}</h1>
+          <div className="hero-details-container">
+            <p> {publishDate?.slice(0, 4)}</p>
+            <div className="genres">
+              <GenreMaker genreId={genres} genreState={genreState} />
+            </div>
+            <div className="creators"> {renderDirector()} </div>
+            <Button
+              className="play-button"
+              icon={<PlayCircleOutlined />}
+            ></Button>
+          </div>
         </div>
+        <Divider
+          style={{
+            borderColor: "#777d6b",
+          }}
+          className="hero-divider"
+        >
+          Details
+        </Divider>
+        <div className="details wrapper">
+          <div className="left-details">
+            <p> {overview} </p>
+          </div>
+          <Divider
+            type="vertical"
+            style={{
+              borderColor: "#777d6b",
+              height: "130px",
+            }}
+            className="details-divider"
+          />
+          <div className="right-details">
+            <div className="rating">
+              <span className="test"> Average rating </span>
+              <Progress
+                type="dashboard"
+                steps={10}
+                percent={ratingsGenerator}
+                trailColor="rgba(250, 255, 254, 0.2)"
+                strokeWidth={20}
+                gapPosition="left"
+                size={70}
+                className="rating-progress"
+              />
+            </div>
+            <div>
+              <RuntimeConverter timeSpan={duration} />
+            </div>
+            <div className="seasons-episodes">
+              {contentType !== "movie" && (
+                <p>
+                  {number_of_seasons > 1
+                    ? `${number_of_seasons} seasons`
+                    : `${number_of_seasons} season`}
+                  / {number_of_episodes} episodes :
+                  {in_production ? " in production" : "Finished"}
+                </p>
+              )}
+            </div>
+            <div className="creators"> {renderDirector()} </div>
+          </div>
+        </div>
+
+        <Swiper
+          slidesPerView={6}
+          className="actors-Swiper"
+          navigation={true}
+          modules={[Navigation]}
+          pagination={true}
+          centeredSlides={false}
+          spaceBetween={0}
+          breakpoints={{
+            0: {
+              slidesPerView: 1,
+            },
+            576: {
+              slidesPerView: 2,
+            },
+            768: {
+              slidesPerView: 3,
+            },
+            992: {
+              slidesPerView: 4,
+            },
+            1150: {
+              slidesPerView: 5,
+            },
+          }}
+        >
+          <div className="actors-container"> {topCastList()} </div>
+        </Swiper>
+        <div className="user-reviews wrapper">
+          <Tabs
+            defaultActiveKey="1"
+            items={userReviews()}
+          />
+        </div>
+        <div className="flex">{recommendedMedia()}</div>
       </StyledSingleMedia>
+      <Drawer
+        title={selectedActor ? selectedActor.name : "Actor Details"}
+        onClose={closeActorDrawer}
+        open={drawerOpen}
+        width={400}
+        loading={drawerLoading}
+        footer={
+          <h3>
+            <a
+              href={
+                actorDetails.imdb_id
+                  ? `https://www.imdb.com/name/${actorDetails.imdb_id}/`
+                  : ""
+              }
+              target="_blank"
+            >
+              Link to imdb
+            </a>
+          </h3>
+        }
+        style={{ backgroundColor: "#eff3ea" }}
+        size="large"
+      >
+        {selectedActor && (
+          <div>
+            <p>Character: {selectedActor.character}</p>
+            <p>Popularity: {selectedActor.popularity}</p>
+            <img
+              src={`${baseImgUrl.w300}${selectedActor.profile_path}`}
+              alt={selectedActor.name}
+            />
+            <p>zzzz: {actorDetails.birthday}</p>
+          </div>
+        )}
+      </Drawer>
     </SecondaryLayout>
   );
 };
