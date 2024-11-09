@@ -32,7 +32,6 @@ const SingleMedia = () => {
         const isMobile = window.innerWidth <= 768;
         setBackdropSize(isMobile ? "w780" : "w1280");
         setImageSrc(isMobile ? content.poster_path : content.backdrop_path);
-        console.log("backdrop", content.backdrop_path);
       };
       updateImageSrc();
     }
@@ -142,9 +141,8 @@ const SingleMedia = () => {
       .sort((a, b) => b.popularity - a.popularity)
       .slice(0, 6)
       .map((item, index) => (
-        <SwiperSlideStyled>
+        <SwiperSlideStyled key={index}>
           <div
-            key={index}
             className="actor-item"
             onClick={() => openActorDrawer(item)}
           >

@@ -8,7 +8,8 @@ import {
   GithubOutlined,
 } from "@ant-design/icons";
 import footerImagesArray from "../../Helpers/arrays/footerImages";
-import MessageAntd from "../Headers/MessageAntd";
+import MessageAntd from "../AuxiliaryComponents/MessageAntd";
+
 
 const Footer = () => {
   const renderFarm = () => {

@@ -5,7 +5,7 @@ import { Button, Popover } from "antd";
 import NotificationDropdown from "../../AuxiliaryComponents/NotificationDropdown";
 import ProfileDropdown from "../../AuxiliaryComponents/ProfileDropdown";
 import SearchBox from "../../AuxiliaryComponents/SearchBox";
-import MessageAntd from "../MessageAntd";
+import MessageAntd from "../../AuxiliaryComponents/MessageAntd";
 
 const Header = () => {
   const renderFarm = () => {
