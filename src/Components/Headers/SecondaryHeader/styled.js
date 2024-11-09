@@ -24,7 +24,7 @@ export const SecondHeaderStyled = styled.div`
   }
   .right-menu {
     margin-right: 30px;
-    /* width: 8vw; */
+    width: auto;
     .search-holder {
       display: flex;
       flex-direction: row;
@@ -33,6 +33,9 @@ export const SecondHeaderStyled = styled.div`
         color: #fff;
         display: flex;
         flex-direction: row;
+        @media screen and (max-width: ${small}) {
+          display: none;
+        }
       }
       .hamburger-menu {
         display: none;
@@ -50,11 +53,11 @@ export const SecondHeaderStyled = styled.div`
       }
     }
     @media screen and (min-width: ${medium}) {
-      width: auto;
+      width: 180px;
       padding: 0 20px;
     }
     @media screen and (max-width: ${small}) {
-      width: 150px;
+      margin-right: 25px;
     }
 
     .pipe {

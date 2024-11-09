@@ -15,7 +15,7 @@ const SecondaryHeader = () => {
         </div>
         <div className="right-menu flex justify-between align-center ">
             <div className="search-holder">
-              <SearchOutlined className="search-icon" />
+              <Link to={"/search"}> <SearchOutlined className="search-icon" /> </Link>
               <div className="hamburger-menu flex flex-column justify-between">
                 <span></span>
                 <span></span>

@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { primaryTheme } from "../../GlobalStyles/themes";
 import { SwiperSlide } from "swiper/react";
+import { Drawer } from "antd";
 const { small, medium, large, xLarge } = primaryTheme.viewports;
 const { white, black, gray, red, orange, blue, green } = primaryTheme.colors;
 
@@ -60,11 +61,13 @@ export const StyledSingleMedia = styled.div`
       @media screen and (max-width: ${small}) {
         font-size: 40px;
         font-weight: 700;
+        text-shadow: 1px 1px 4px #000;
       }
     }
     .hero-details-container {
       margin-left: 15px;
       position: relative;
+
       p {
         font-size: 13px;
       }
@@ -99,6 +102,7 @@ export const StyledSingleMedia = styled.div`
     @media screen and (max-width: ${small}) {
       margin: 0;
       justify-content: center;
+      text-shadow: 0.5px 0.5px 1px rgba(0, 0, 0, 0.7);
     }
   }
   .hero-divider {
@@ -119,6 +123,7 @@ export const StyledSingleMedia = styled.div`
         width: 100%;
         margin: 0 0 40px 0;
         padding: 0 20px;
+        text-align: center;
       }
     }
     .right-details {
@@ -144,9 +149,13 @@ export const StyledSingleMedia = styled.div`
           color: #fff;
         }
       }
-
       .creators span {
         color: ${gray.silver};
+        @media screen and (max-width: ${small}) {
+          text-shadow: none;
+          text-align: center;
+          margin-left: 0;
+        }
       }
     }
     @media screen and (max-width: ${small}) {
@@ -161,6 +170,25 @@ export const StyledSingleMedia = styled.div`
     padding-left: 30px;
     padding-right: 30px;
     align-items: center;
+  }
+  .bottom-divider {
+    display: none;
+    color: ${gray.normal};
+    @media screen and (max-width: ${small}) {
+      display: block;
+    }
+  }
+  .also-like-text {
+    margin-left: 65px;
+    margin-bottom: 20px;
+    font-weight: 500;
+    font-size: 22px;
+    color: ${gray.normal};
+    @media screen and (max-width: ${small}) {
+      font-size: 16px;
+      margin-left: 0;
+      display: none;
+    }
   }
   .actors-Swiper {
     text-align: center;
@@ -203,6 +231,7 @@ export const StyledSingleMedia = styled.div`
       height: auto;
     }
   }
+  
 `;
 
 export const SwiperSlideStyled = styled(SwiperSlide)`
@@ -224,3 +253,19 @@ export const SwiperSlideStyled = styled(SwiperSlide)`
     }
   }
 `;
+
+
+export const DrawerStyled = styled(Drawer)`
+.link-to-imdb {
+    color: ${blue.pure};
+  }
+.drawer-actor-details {
+  
+    img {
+      border-radius: 15px;
+    }
+    span {
+      color: ${gray.darkest};
+    }
+  }
+`
