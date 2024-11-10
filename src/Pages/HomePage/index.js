@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import ActorsSlideShow from "../../Components/ActorsSlideShow";
 import HeroSlider from "../../Components/HeroSlider";
 import MainLayout from "../../Components/Layouts/MainLayout";
@@ -5,6 +6,9 @@ import Subscribe from "../../Components/Subscribe";
 import WatchListSuggestions from "../../Components/WatchListSuggestions";
 
 const HomePage = () => {
+  useEffect(() => {
+    document.title = "Streamo-Movies and Tv";
+  },[])
   return (
     <MainLayout>
         <HeroSlider />

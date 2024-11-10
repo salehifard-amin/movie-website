@@ -2,9 +2,19 @@ import { useEffect, useState } from "react";
 import SecondaryLayout from "../../Components/Layouts/SecondaryLayout";
 import { myApi } from "../../Helpers/BaseUrl/baseApi";
 import { Link, useParams } from "react-router-dom";
-import { Button, Divider, Drawer, Progress, Skeleton, Spin, Tabs } from "antd";
+import {
+  Button,
+  Card,
+  Divider,
+  Drawer,
+  Progress,
+  Skeleton,
+  Spin,
+  Tabs,
+  Tooltip,
+} from "antd";
 import baseImgUrl from "../../Helpers/BaseUrl/baseImage";
-import { StyledSingleMedia, SwiperSlideStyled } from "./styled";
+import { DrawerStyled, StyledSingleMedia, SwiperSlideStyled } from "./styled";
 import GenreMaker from "../../Components/AuxiliaryComponents/GenreMaker";
 import RuntimeConverter from "../../Helpers/RuntimeConverter";
 import BackdropOverlay from "../../Components/AuxiliaryComponents/BackdropOverlay";
@@ -25,14 +35,19 @@ const SingleMedia = () => {
   const [actorDetails, setActorDetails] = useState({});
   const [imageSrc, setImageSrc] = useState("");
   const { contentType, mediaId } = useParams();
+  
 
   useEffect(() => {
+    document.title = content?.name
+      ? content.name
+      : content.title
+      ? content.title
+      : "Content page";
     if (content.backdrop_path && content.poster_path) {
       const updateImageSrc = () => {
         const isMobile = window.innerWidth <= 768;
         setBackdropSize(isMobile ? "w780" : "w1280");
         setImageSrc(isMobile ? content.poster_path : content.backdrop_path);
-        console.log("backdrop", content.backdrop_path);
       };
       updateImageSrc();
     }
@@ -94,8 +109,6 @@ const SingleMedia = () => {
   const {
     title,
     name,
-    backdrop_path,
-    poster_path,
     release_date,
     first_air_date,
     genres,
@@ -109,7 +122,6 @@ const SingleMedia = () => {
     vote_average,
     recommendations,
     reviews,
-    imdb_id,
   } = content;
   const publishDate = release_date ?? first_air_date;
   const duration = runtime ? runtime : episode_run_time;
@@ -124,7 +136,8 @@ const SingleMedia = () => {
         <div className="review-item">
           {item.content.length > 400 ? (
             <span>
-              {item.content.slice(0, 400)}...  <a href={item.url} target="_blank" rel="noopener noreferrer">
+              {item.content.slice(0, 400)}...
+              <a href={item.url} target="_blank" rel="noopener noreferrer">
                 continue reading
               </a>
             </span>
@@ -142,12 +155,8 @@ const SingleMedia = () => {
       .sort((a, b) => b.popularity - a.popularity)
       .slice(0, 6)
       .map((item, index) => (
-        <SwiperSlideStyled>
-          <div
-            key={index}
-            className="actor-item"
-            onClick={() => openActorDrawer(item)}
-          >
+        <SwiperSlideStyled key={index}>
+          <div className="actor-item" onClick={() => openActorDrawer(item)}>
             <img src={`${baseImgUrl.w185}${item.profile_path}`} />
             <p className="actor-name"> {item.name} </p>
             <p className="actor-character"> {item.character} </p>
@@ -172,20 +181,36 @@ const SingleMedia = () => {
     if (!recommendations || !recommendations.results) return [];
     return recommendations.results
       .sort((a, b) => b.popularity - a.popularity)
-      .slice(0, 6)
+      .slice(0, 8)
       .map((item, index) => (
-        <Link
-          to={`/contents/${release_date ? "movie" : "tv"}/${item.id}`}
-          key={index}
-        >
-          <img src={`${baseImgUrl.w154}${item.poster_path}`} />
-          <h2> {item.title ? item.title : item.name} </h2>
-          <h3>
-            {item.release_date
-              ? item.release_date.slice(0, 4)
-              : item.first_air_date.slice(0, 4)}
-          </h3>
-        </Link>
+        <SwiperSlide key={index}>
+          <Link to={`/contents/${release_date ? "movie" : "tv"}/${item.id}`}>
+            <Card
+              type="inner"
+              bordered={false}
+              hoverable
+              cover={<img src={`${baseImgUrl.w300}${item.poster_path}`} />}
+              style={{
+                width: 180,
+                color: "#333333",
+                backgroundColor: "#D3D3D3",
+                margin: "0 auto",
+                height: "auto",
+              }}
+            >
+              <Tooltip title={title ? title : name}>
+                <p className="recommend-card-title">
+                  {item.title ? item.title : item.name}
+                </p>
+                <p>
+                  {item.release_date
+                    ? item.release_date.slice(0, 4)
+                    : item.first_air_date.slice(0, 4)}
+                </p>
+              </Tooltip>
+            </Card>
+          </Link>
+        </SwiperSlide>
       ));
   };
 
@@ -329,22 +354,57 @@ const SingleMedia = () => {
           <div className="actors-container"> {topCastList()} </div>
         </Swiper>
         <div className="user-reviews wrapper">
-          <Tabs
-            defaultActiveKey="1"
-            items={userReviews()}
-          />
+          <Tabs defaultActiveKey="1" items={userReviews()} />
         </div>
-        <div className="flex">{recommendedMedia()}</div>
+        <Divider
+          style={{
+            borderBottom: "1px solid #666666",
+          }}
+          className="bottom-divider"
+        >
+          YOU MAY ALSO LIKE
+        </Divider>
+        <div className="also-like-text">YOU MAY ALSO LIKE</div>
+
+        <Swiper
+          slidesPerView={5}
+          className="actors-Swiper"
+          navigation={true}
+          modules={[Navigation]}
+          pagination={true}
+          centeredSlides={false}
+          spaceBetween={0}
+          breakpoints={{
+            0: {
+              slidesPerView: 1,
+            },
+            576: {
+              slidesPerView: 2,
+            },
+            768: {
+              slidesPerView: 3,
+            },
+            992: {
+              slidesPerView: 4,
+            },
+            1150: {
+              slidesPerView: 5,
+            },
+          }}
+        >
+          <div className="flex">{recommendedMedia()}</div>
+        </Swiper>
       </StyledSingleMedia>
-      <Drawer
+      <DrawerStyled
         title={selectedActor ? selectedActor.name : "Actor Details"}
         onClose={closeActorDrawer}
         open={drawerOpen}
-        width={400}
+        width={"auto"}
         loading={drawerLoading}
         footer={
           <h3>
             <a
+              className="link-to-imdb"
               href={
                 actorDetails.imdb_id
                   ? `https://www.imdb.com/name/${actorDetails.imdb_id}/`
@@ -356,21 +416,40 @@ const SingleMedia = () => {
             </a>
           </h3>
         }
-        style={{ backgroundColor: "#eff3ea" }}
+        style={{ backgroundColor: "#d9d9d9" }}
         size="large"
       >
         {selectedActor && (
-          <div>
-            <p>Character: {selectedActor.character}</p>
-            <p>Popularity: {selectedActor.popularity}</p>
+          <div className="drawer-actor-details">
             <img
               src={`${baseImgUrl.w300}${selectedActor.profile_path}`}
               alt={selectedActor.name}
             />
-            <p>zzzz: {actorDetails.birthday}</p>
+            <p>
+              <span>Character:</span> {selectedActor.character}
+            </p>
+
+            <p>
+              <span>Date of birth: </span> {actorDetails.birthday}
+            </p>
+            <p>
+              {actorDetails.deathday && (
+                <>
+                  <span>Death Date:</span> {actorDetails.deathday}
+                </>
+              )}
+            </p>
+            <p className="actor-biography">
+              {actorDetails.biography && (
+                <>
+                  <span>Biography : </span>{" "}
+                  {actorDetails.biography.slice(0, 100)}...
+                </>
+              )}
+            </p>
           </div>
         )}
-      </Drawer>
+      </DrawerStyled>
     </SecondaryLayout>
   );
 };

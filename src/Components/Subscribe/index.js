@@ -1,6 +1,7 @@
 import { Button, Popover } from "antd";
 import { SubscribeStyled } from "./styled";
-import MessageAntd from "../Headers/MessageAntd";
+import MessageAntd from "../AuxiliaryComponents/MessageAntd";
+
 
 const Subscribe = () => {
   return (

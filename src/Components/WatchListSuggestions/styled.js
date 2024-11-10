@@ -10,7 +10,7 @@ export const MainContainerStyled = styled.div`
   max-width: 1250px;
   margin-left: auto;
   margin-right: auto;
-  margin-bottom: 30px;
+  margin-bottom: 60px;
   .list-category-title {
     border-bottom: 1px solid rgba(0, 0, 0, 0.5);
     position: relative;
