@@ -6,10 +6,10 @@ const GenreMaker = ({ genreId = [], genreState = [] }) => {
         genreId.map((item, index) => {
           const singleId = typeof item === "object" ? item.id : item;
 
-          const FilteredResult = genreState.find(({ id }) => id === singleId);
+          const filteredResult = genreState.find(({ id }) => id === singleId);
           return (
-            <span key={FilteredResult.id}>
-              {FilteredResult.name}
+            <span key={filteredResult.id}>
+              {filteredResult.name}
               {index < genreId.length - 1 && (
                 <span className="separator"> . </span>
               )}

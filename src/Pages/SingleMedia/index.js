@@ -11,6 +11,7 @@ import {
   Skeleton,
   Spin,
   Tabs,
+  Tooltip,
 } from "antd";
 import baseImgUrl from "../../Helpers/BaseUrl/baseImage";
 import { DrawerStyled, StyledSingleMedia, SwiperSlideStyled } from "./styled";
@@ -34,8 +35,14 @@ const SingleMedia = () => {
   const [actorDetails, setActorDetails] = useState({});
   const [imageSrc, setImageSrc] = useState("");
   const { contentType, mediaId } = useParams();
+  
 
   useEffect(() => {
+    document.title = content?.name
+      ? content.name
+      : content.title
+      ? content.title
+      : "Content page";
     if (content.backdrop_path && content.poster_path) {
       const updateImageSrc = () => {
         const isMobile = window.innerWidth <= 768;
@@ -102,8 +109,6 @@ const SingleMedia = () => {
   const {
     title,
     name,
-    backdrop_path,
-    poster_path,
     release_date,
     first_air_date,
     genres,
@@ -117,7 +122,6 @@ const SingleMedia = () => {
     vote_average,
     recommendations,
     reviews,
-    imdb_id,
   } = content;
   const publishDate = release_date ?? first_air_date;
   const duration = runtime ? runtime : episode_run_time;
@@ -132,7 +136,7 @@ const SingleMedia = () => {
         <div className="review-item">
           {item.content.length > 400 ? (
             <span>
-              {item.content.slice(0, 400)}...{" "}
+              {item.content.slice(0, 400)}...
               <a href={item.url} target="_blank" rel="noopener noreferrer">
                 continue reading
               </a>
@@ -177,32 +181,33 @@ const SingleMedia = () => {
     if (!recommendations || !recommendations.results) return [];
     return recommendations.results
       .sort((a, b) => b.popularity - a.popularity)
-      .slice(0, 6)
+      .slice(0, 8)
       .map((item, index) => (
-        <SwiperSlide>
-          <Link
-            to={`/contents/${release_date ? "movie" : "tv"}/${item.id}`}
-            key={index}
-          >
+        <SwiperSlide key={index}>
+          <Link to={`/contents/${release_date ? "movie" : "tv"}/${item.id}`}>
             <Card
-            type="inner"
+              type="inner"
               bordered={false}
               hoverable
               cover={<img src={`${baseImgUrl.w300}${item.poster_path}`} />}
               style={{
-                width: 230,
+                width: 180,
                 color: "#333333",
                 backgroundColor: "#D3D3D3",
                 margin: "0 auto",
                 height: "auto",
               }}
             >
-              <p> {item.title ? item.title : item.name} </p>
-              <p>
-                {item.release_date
-                  ? item.release_date.slice(0, 4)
-                  : item.first_air_date.slice(0, 4)}
-              </p>
+              <Tooltip title={title ? title : name}>
+                <p className="recommend-card-title">
+                  {item.title ? item.title : item.name}
+                </p>
+                <p>
+                  {item.release_date
+                    ? item.release_date.slice(0, 4)
+                    : item.first_air_date.slice(0, 4)}
+                </p>
+              </Tooltip>
             </Card>
           </Link>
         </SwiperSlide>
@@ -362,12 +367,12 @@ const SingleMedia = () => {
         <div className="also-like-text">YOU MAY ALSO LIKE</div>
 
         <Swiper
-          slidesPerView={6}
+          slidesPerView={5}
           className="actors-Swiper"
           navigation={true}
           modules={[Navigation]}
           pagination={true}
-          centeredSlides={true}
+          centeredSlides={false}
           spaceBetween={0}
           breakpoints={{
             0: {
@@ -398,7 +403,8 @@ const SingleMedia = () => {
         loading={drawerLoading}
         footer={
           <h3>
-            <a className="link-to-imdb"
+            <a
+              className="link-to-imdb"
               href={
                 actorDetails.imdb_id
                   ? `https://www.imdb.com/name/${actorDetails.imdb_id}/`
@@ -419,9 +425,28 @@ const SingleMedia = () => {
               src={`${baseImgUrl.w300}${selectedActor.profile_path}`}
               alt={selectedActor.name}
             />
-            <p><span>Character:</span> {selectedActor.character}</p>
-            <p><span>Popularity:</span> {selectedActor.popularity}</p>
-            <p><span>Date of birth: </span> {actorDetails.birthday}</p>
+            <p>
+              <span>Character:</span> {selectedActor.character}
+            </p>
+
+            <p>
+              <span>Date of birth: </span> {actorDetails.birthday}
+            </p>
+            <p>
+              {actorDetails.deathday && (
+                <>
+                  <span>Death Date:</span> {actorDetails.deathday}
+                </>
+              )}
+            </p>
+            <p className="actor-biography">
+              {actorDetails.biography && (
+                <>
+                  <span>Biography : </span>{" "}
+                  {actorDetails.biography.slice(0, 100)}...
+                </>
+              )}
+            </p>
           </div>
         )}
       </DrawerStyled>

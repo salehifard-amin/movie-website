@@ -179,7 +179,7 @@ export const StyledSingleMedia = styled.div`
     }
   }
   .also-like-text {
-    margin-left: 65px;
+    margin-left: 60px;
     margin-bottom: 20px;
     font-weight: 500;
     font-size: 22px;
@@ -231,7 +231,11 @@ export const StyledSingleMedia = styled.div`
       height: auto;
     }
   }
-  
+  .recommend-card-title {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 `;
 
 export const SwiperSlideStyled = styled(SwiperSlide)`
@@ -263,9 +267,14 @@ export const DrawerStyled = styled(Drawer)`
   
     img {
       border-radius: 15px;
+      max-width: 220px;
     }
     span {
       color: ${gray.darkest};
+    }
+    .actor-biography {
+      max-width: 250px;
+      width: 100%;
     }
   }
 `
