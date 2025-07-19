@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { primaryTheme } from "../../../GlobalStyles/themes";
+import { Drawer } from "antd";
 const { small, medium, large } = primaryTheme.viewports;
 
 export const HeaderStyled = styled.div`
@@ -48,6 +49,7 @@ export const HeaderStyled = styled.div`
     }
     @media screen and (max-width: ${medium}) {
       padding: 0 20px;
+      margin-top: 10px;
     }
     .search-subscribe {
       margin-right: 70px;
@@ -60,6 +62,19 @@ export const HeaderStyled = styled.div`
         height: 20px;
         background-color: ${primaryTheme.colors.white};
         display: inline-block;
+        @media screen and (max-width: ${small}) {
+          display: none;
+        }
+      }
+      .hide-notif-drop-down {
+        @media screen and (max-width: ${small}) {
+          display: none;
+        }
+      }
+      .hide-profile-drop-down {
+        @media screen and (max-width: ${small}) {
+          display: none;
+        }
       }
     }
 
@@ -82,6 +97,8 @@ export const HeaderStyled = styled.div`
       }
       @media screen and (max-width: ${medium}) {
         display: flex;
+        position: relative;
+        top: 5px;
       }
     }
   }
@@ -92,3 +109,4 @@ export const HeaderStyled = styled.div`
     }
   }
 `;
+

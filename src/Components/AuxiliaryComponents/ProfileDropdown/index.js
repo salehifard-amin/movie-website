@@ -1,7 +1,7 @@
 import {  Dropdown, Button } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 
-const ProfileDropdown = () => {
+const ProfileDropdown = ( {className} ) => {
   const notifications = [
     {
       key: "1",
@@ -14,7 +14,7 @@ const ProfileDropdown = () => {
   ];
 
   return (
-    <Dropdown menu={{ items: notifications }} trigger={["hover"]}>
+    <Dropdown className={className} menu={{ items: notifications }} trigger={["hover"]}>
         <Button type="text">
         <UserOutlined style={{color:"#fff",fontSize:"20px"}} />
         </Button>

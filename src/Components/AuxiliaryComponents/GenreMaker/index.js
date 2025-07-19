@@ -1,12 +1,16 @@
-const GenreMaker = ({ genreId = [], genreState = [] }) => {
+
+const GenreMaker = ({ genreId = [], genreMap = {} }) => {
 
   return (
     <p className="movie-genres">
-      {genreState.length > 0 &&
+      {genreId &&
         genreId.map((item, index) => {
           const singleId = typeof item === "object" ? item.id : item;
-
-          const filteredResult = genreState.find(({ id }) => id === singleId);
+          const filteredResult = genreMap[singleId];
+          
+          if (!filteredResult) {
+            return null;
+          }
           return (
             <span key={filteredResult.id}>
               {filteredResult.name}
@@ -19,4 +23,5 @@ const GenreMaker = ({ genreId = [], genreState = [] }) => {
     </p>
   );
 };
+
 export default GenreMaker;

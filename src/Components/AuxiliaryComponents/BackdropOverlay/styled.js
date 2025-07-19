@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { primaryTheme } from "../../../GlobalStyles/themes";
-const {small,medium,large, xLarge} = primaryTheme.viewports
+const {small} = primaryTheme.viewports
 export const Overlay = styled.div`
   position: fixed;
   top: 0;
@@ -18,7 +18,7 @@ export const Overlay = styled.div`
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(to right, rgba(0, 0, 0, 0.9), transparent 60%);
+    background: linear-gradient(to right, rgba(0, 0, 0, 1), transparent 80%);
     pointer-events: none;
     z-index: -10;
     @media screen and (max-width:${small}){

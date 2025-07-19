@@ -1,20 +1,20 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Link, useSearchParams } from "react-router-dom";
-import { Row, Col, AutoComplete } from "antd";
+import { Link } from "react-router-dom";
+import { Row, Col } from "antd";
 import { myApi } from "../../../Helpers/BaseUrl/baseApi";
 import baseImgUrl from "../../../Helpers/BaseUrl/baseImage";
 import { SearchOutlined, CloseOutlined } from "@ant-design/icons";
 import { SearchContainer, StyledAutoComplete } from "./styled";
 import { Icon } from "./styled";
 import { SearchBar } from "./styled";
+import { debounce } from "lodash";
 
 const SearchBox = () => {
   const [openDropdown, setOpenDropdown] = useState(false);
   const [options, setOptions] = useState([]);
   const [isSearchVisible, setIsSearchVisible] = useState(false);
   const [serachIcon, setSearchIcon] = useState(true);
-
   const [searchValue, setSearchValue] = useState("");
   const navigate = useNavigate();
 
@@ -22,8 +22,9 @@ const SearchBox = () => {
     if (!event) {
       setOptions([]);
       setOpenDropdown(false);
+      return;
     }
-    if (event.length >= 3 && event !== null) {
+    if (event.length >= 3) {
       setSearchValue(event);
       myApi
         .get(`/search/multi?query= ${event}`)
@@ -86,6 +87,8 @@ const SearchBox = () => {
     }
   };
 
+  const debounceQuery = useMemo(()=> debounce(query,700),[])
+
   const handleKeyDown = (event) => {
     if (event.key === "Enter") {
       navigate("/search", { state: { searchValue } });
@@ -103,10 +106,10 @@ const SearchBox = () => {
           allowClear
           id="auto-comp"
           style={{
-            width: "30vw",
+            width: "40vw",
             height: "auto",
           }}
-          onSearch={query}
+          onSearch={debounceQuery}
           onKeyDown={handleKeyDown}
           placeholder="Search here"
           options={options}

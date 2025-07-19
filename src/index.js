@@ -4,6 +4,7 @@ import MyRouter from "./Components/Router";
 import GlobalStyle from "./GlobalStyles/GlobalStyles";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
+
 root.render(
   <Fragment>
     <GlobalStyle/>

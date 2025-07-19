@@ -1,4 +1,5 @@
 import { createGlobalStyle } from "styled-components";
+import "./fonts/poppins.css"
 
 const GlobalStyle = createGlobalStyle`
 html {
@@ -10,6 +11,7 @@ body {
     padding: 0;
     font-family: "poppins";
     overflow-x: hidden;
+    background-color: #111010;
 }
 *,*::after,
 *::before {

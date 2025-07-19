@@ -1,21 +1,19 @@
 const menuItemsArray = [
     {
         title:"Home",
+        path: "/"
     },
     {
         title:"Series",
+        path: "/series"
     },
     {
         title:"Movies",
+        path: "/movies"
     },
     {
-        title:"Pages",
-    },
-    {
-        title:"Pricing",
-    },
-    {
-        title:"Contact",
+        title:"About US",
+        path: "/about-us"
     },
 ]
 export default menuItemsArray;

@@ -1,18 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import SecondaryLayout from "../../Components/Layouts/SecondaryLayout";
 import { myApi } from "../../Helpers/BaseUrl/baseApi";
 import { Link, useParams } from "react-router-dom";
-import {
-  Button,
-  Card,
-  Divider,
-  Drawer,
-  Progress,
-  Skeleton,
-  Spin,
-  Tabs,
-  Tooltip,
-} from "antd";
 import baseImgUrl from "../../Helpers/BaseUrl/baseImage";
 import { DrawerStyled, StyledSingleMedia, SwiperSlideStyled } from "./styled";
 import GenreMaker from "../../Components/AuxiliaryComponents/GenreMaker";
@@ -23,13 +12,14 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import "swiper/css/navigation";
 import "swiper/css";
+import { Button, Card, Divider, Progress, Spin, Tabs, Tooltip } from "antd";
 
 const SingleMedia = () => {
   const [content, setContent] = useState({});
   const [drawerLoading, setDrawerLoading] = useState(true);
   const [loading, setLoading] = useState(true);
   const [genreState, setGenreState] = useState([]);
-  const [backdropSize, setBackdropSize] = useState("w1280");
+  const [backdropSize, setBackdropSize] = useState("154");
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [selectedActor, setSelectedActor] = useState(null);
   const [actorDetails, setActorDetails] = useState({});
@@ -38,21 +28,17 @@ const SingleMedia = () => {
   
 
   useEffect(() => {
-    document.title = content?.name
-      ? content.name
-      : content.title
-      ? content.title
-      : "Content page";
+    document.title = content?.name || content?.title || "Content page";
     if (content.backdrop_path && content.poster_path) {
       const updateImageSrc = () => {
-        const isMobile = window.innerWidth <= 768;
-        setBackdropSize(isMobile ? "w780" : "w1280");
+        const isMobile = window.innerWidth <= 576;
+        const isTablet = window.innerWidth >= 768 && window.innerWidth <= 992;
+        setBackdropSize(isMobile ? "w342" : isTablet ? "w780" : "w154");
         setImageSrc(isMobile ? content.poster_path : content.backdrop_path);
       };
       updateImageSrc();
     }
   }, [content.backdrop_path, content.poster_path]);
-
   useEffect(() => {
     window.scrollTo({
       top: 0,
@@ -63,8 +49,8 @@ const SingleMedia = () => {
     setLoading(true);
     const endpoint =
       contentType === "movie"
-        ? `/movie/${mediaId}?append_to_response=credits,recommendations,reviews`
-        : `/tv/${mediaId}?append_to_response=credits,recommendations,reviews`;
+        ? `/movie/${mediaId}?append_to_response=credits,recommendations,reviews,videos`
+        : `/tv/${mediaId}?append_to_response=credits,recommendations,reviews,videos`;
     myApi
       .get(endpoint)
       .then((res) => {
@@ -79,17 +65,31 @@ const SingleMedia = () => {
   }, [mediaId, contentType]);
 
   useEffect(() => {
-    const genreEndpoint =
-      contentType === "movie" ? "/genre/movie/list" : "/genre/tv/list";
-    myApi
-      .get(genreEndpoint)
-      .then((res) => {
-        setGenreState(res.data.genres);
-      })
-      .catch((er) => {
-        console.log("Error is:", er);
-      });
+    const localGenres =
+      contentType === "movie"
+        ? JSON.parse(localStorage.getItem("movieGenres"))
+        : JSON.parse(localStorage.getItem("tvGenres"));
+    if (localGenres) {
+      setGenreState(localGenres);
+    } else {
+      myApi
+        .get(`/genre/${contentType}/list`)
+        .then((res) => {
+          setGenreState(res.data.genres);
+          localStorage.setItem(
+            `${contentType}Genres`,
+            JSON.stringify(res.data.genres)
+          );
+        })
+        .catch((error) => console.error("Failed to fetch genres:", error));
+    }
   }, []);
+  const genreMap = useMemo(() => {
+    return genreState?.reduce((accumulator, genre) => {
+      accumulator[genre.id] = genre;
+      return accumulator;
+    }, {});
+  }, [genreState]);
 
   useEffect(() => {
     if (!selectedActor) return;
@@ -122,11 +122,11 @@ const SingleMedia = () => {
     vote_average,
     recommendations,
     reviews,
+    videos,
   } = content;
   const publishDate = release_date ?? first_air_date;
   const duration = runtime ? runtime : episode_run_time;
   const ratingsGenerator = Math.floor(vote_average * 10);
-
   const userReviews = () => {
     if (!reviews || !reviews.results) return [];
     return reviews.results.slice(0, 3).map((item, index) => ({
@@ -196,9 +196,10 @@ const SingleMedia = () => {
                 backgroundColor: "#D3D3D3",
                 margin: "0 auto",
                 height: "auto",
+                minHeight: "346px",
               }}
             >
-              <Tooltip title={title ? title : name}>
+              <Tooltip title={item.title ? item.title : item.name}>
                 <p className="recommend-card-title">
                   {item.title ? item.title : item.name}
                 </p>
@@ -241,8 +242,21 @@ const SingleMedia = () => {
     return <span>Director/Creator not available</span>;
   };
 
-  const titleFontSize = (title || name)?.length < 22 ? "70px" : "45px";
+  const titleFontSize = (title || name)?.length < 20 ? "35px" : "22px";
+  const scrollToTrailer = () => {
+    const trailerEl = document.querySelector(".iframe-wrapper");
+    if (trailerEl)
+      trailerEl.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
+  };
 
+ const findTrailer = videos?.results?.find(({type,site})=> type === "Trailer" && site === "YouTube");
+  if(videos?.results?.length) console.log(findTrailer);
+  
+  
+  
   return (
     <SecondaryLayout>
       <StyledSingleMedia $fontProps={titleFontSize}>
@@ -258,19 +272,30 @@ const SingleMedia = () => {
               alt={title || name}
             />
           )}
+          {!loading && <div className="blur"></div>}
         </div>
-        <div className="hero-contents">
-          <h1 className="main-title">{title || name}</h1>
-          <div className="hero-details-container">
-            <p> {publishDate?.slice(0, 4)}</p>
-            <div className="genres">
-              <GenreMaker genreId={genres} genreState={genreState} />
+        <div className="hero">
+          <div className="poster-container">
+            <img
+              className="poster"
+              src={`${baseImgUrl["w185"]}${content.poster_path}`}
+              alt={title || name}
+            />
+          </div>
+          <div className="hero-contents">
+            <h1 className="main-title">{title || name}</h1>
+            <div className="hero-details-container">
+              <p> {publishDate?.slice(0, 4)}</p>
+              <div className="genres">
+                <GenreMaker genreId={genres} genreMap={genreMap} />
+              </div>
+              <div className="creators"> {renderDirector()} </div>
+              <Button
+                onClick={scrollToTrailer}
+                className="play-button"
+                icon={<PlayCircleOutlined />}
+              ></Button>
             </div>
-            <div className="creators"> {renderDirector()} </div>
-            <Button
-              className="play-button"
-              icon={<PlayCircleOutlined />}
-            ></Button>
           </div>
         </div>
         <Divider
@@ -324,7 +349,32 @@ const SingleMedia = () => {
             <div className="creators"> {renderDirector()} </div>
           </div>
         </div>
-
+        <div className="iframe-wrapper">
+          {videos?.results?.length > 0 ? (
+            <iframe
+              src={`https://www.youtube.com/embed/${findTrailer.key}?controls=1&rel=0&iv_load_policy=3`}
+              title="Embedded content"
+              allow="autoplay; encrypted-media"
+              allowFullScreen
+              loading="lazy"
+              sandbox="allow-scripts allow-same-origin"
+            />
+          ) : (
+            <p>
+              <span style={{ fontSize: "25px" }}>🎥</span>Video currently not
+              available.. 😒
+            </p>
+          )}
+        </div>
+        <Divider
+          style={{
+            borderColor: "#777d6b",
+            opacity: "0.8",
+          }}
+          className="hero-divider"
+        >
+          Top Actors
+        </Divider>
         <Swiper
           slidesPerView={6}
           className="actors-Swiper"
@@ -358,17 +408,16 @@ const SingleMedia = () => {
         </div>
         <Divider
           style={{
-            borderBottom: "1px solid #666666",
+            borderColor: "#777d6b",
+            opacity: "0.8",
           }}
-          className="bottom-divider"
+          className="hero-divider"
         >
-          YOU MAY ALSO LIKE
+          You May Also Like
         </Divider>
-        <div className="also-like-text">YOU MAY ALSO LIKE</div>
-
         <Swiper
           slidesPerView={5}
-          className="actors-Swiper"
+          className="recommended-media-Swiper"
           navigation={true}
           modules={[Navigation]}
           pagination={true}
@@ -442,7 +491,7 @@ const SingleMedia = () => {
             <p className="actor-biography">
               {actorDetails.biography && (
                 <>
-                  <span>Biography : </span>{" "}
+                  <span>Biography : </span>
                   {actorDetails.biography.slice(0, 100)}...
                 </>
               )}

@@ -7,10 +7,8 @@ export const SearchContainer = styled.div`
   display: flex;
   align-items: center;
   @media screen and (max-width:${small}) {
-    flex-direction: column;
     width: 100%;
     align-items: stretch;
-    margin-bottom: 25px;
   }
 `;
 
@@ -27,7 +25,7 @@ export const SearchBar = styled.div`
   transition: max-width 0.4s ease, opacity 0.4s ease;
   overflow: hidden;
   @media screen and (max-width:${small}) {
-    max-width: ${({ $isVisible }) => ($isVisible ? "100%" : "0")};
+    max-width: ${({ $isVisible }) => ($isVisible ? "200px" : "0")};
   }
 `;
 

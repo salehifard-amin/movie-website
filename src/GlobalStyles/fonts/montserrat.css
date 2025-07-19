@@ -1,0 +1,72 @@
+/* montserrat-alternates-100 - latin */
+@font-face {
+    font-display: swap; 
+    font-family: 'Montserrat Alternates';
+    font-style: normal;
+    font-weight: 100;
+    src: url('../../../public/fonts/montserrat/montserrat-alternates-v17-latin-100.woff2') format('woff2'); 
+  }
+  /* montserrat-alternates-200 - latin */
+  @font-face {
+    font-display: swap; 
+    font-family: 'Montserrat Alternates';
+    font-style: normal;
+    font-weight: 200;
+    src: url('../../../public/fonts/montserrat/montserrat-alternates-v17-latin-200.woff2') format('woff2'); 
+  }
+  /* montserrat-alternates-300 - latin */
+  @font-face {
+    font-display: swap; 
+    font-family: 'Montserrat Alternates';
+    font-style: normal;
+    font-weight: 300;
+    src: url('../../../public/fonts/montserrat/montserrat-alternates-v17-latin-300.woff2') format('woff2'); 
+  }
+  /* montserrat-alternates-regular - latin */
+  @font-face {
+    font-display: swap; 
+    font-family: 'Montserrat Alternates';
+    font-style: normal;
+    font-weight: 400;
+    src: url('../../../public/fonts/montserrat/montserrat-alternates-v17-latin-regular.woff2') format('woff2'); 
+  }
+  /* montserrat-alternates-500 - latin */
+  @font-face {
+    font-display: swap; 
+    font-family: 'Montserrat Alternates';
+    font-style: normal;
+    font-weight: 500;
+    src: url('../../../public/fonts/montserrat/montserrat-alternates-v17-latin-500.woff2') format('woff2'); 
+  }
+  /* montserrat-alternates-600 - latin */
+  @font-face {
+    font-display: swap; 
+    font-family: 'Montserrat Alternates';
+    font-style: normal;
+    font-weight: 600;
+    src: url('../../../public/fonts/montserrat/montserrat-alternates-v17-latin-600.woff2') format('woff2'); 
+  }
+  /* montserrat-alternates-700 - latin */
+  @font-face {
+    font-display: swap; 
+    font-family: 'Montserrat Alternates';
+    font-style: normal;
+    font-weight: 700;
+    src: url('../../../public/fonts/montserrat/montserrat-alternates-v17-latin-700.woff2') format('woff2'); 
+  }
+  /* montserrat-alternates-800 - latin */
+  @font-face {
+    font-display: swap; 
+    font-family: 'Montserrat Alternates';
+    font-style: normal;
+    font-weight: 800;
+    src: url('../../../public/fonts/montserrat/montserrat-alternates-v17-latin-800.woff2') format('woff2'); 
+  }
+  /* montserrat-alternates-900 - latin */
+  @font-face {
+    font-display: swap; 
+    font-family: 'Montserrat Alternates';
+    font-style: normal;
+    font-weight: 900;
+    src: url('../../../public/fonts/montserrat/montserrat-alternates-v17-latin-900.woff2') format('woff2'); 
+  }

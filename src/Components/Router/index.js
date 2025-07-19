@@ -1,7 +1,9 @@
+import React, { Suspense } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import HomePage from "../../Pages/HomePage";
-import SingleMovie from "../../Pages/SingleMedia";
-import SearchPage from "../../Pages/SearchPage";
+
+const SingleMovie = React.lazy( ()=> import("../../Pages/SingleMedia"))
+const SearchPage = React.lazy( ()=> import("../../Pages/SearchPage"))
 
 
 export default function MyRouter() {
@@ -12,7 +14,19 @@ export default function MyRouter() {
         },
         {
             path: "/contents/:contentType/:mediaId",
-            element: <SingleMovie />,
+            element: (
+                <Suspense fallback={<div> Loading... </div>}>
+                    <SingleMovie />
+                </Suspense>
+            ),
+        },
+        {
+            path: "/search",
+            element: (
+                <Suspense fallback={<div> Loading... </div>}>
+                    <SearchPage />
+                </Suspense>
+            ),
         },
         {
             path: "/search",

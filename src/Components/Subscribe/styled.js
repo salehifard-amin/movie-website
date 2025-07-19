@@ -1,10 +1,11 @@
 import styled from "styled-components";
 import { primaryTheme } from "../../GlobalStyles/themes";
 const { small, medium, large } = primaryTheme.viewports;
+
 export const SubscribeStyled = styled.div`
   height: 75vh;
   max-height: 610px;
-  background-image: url("./images/slider-hm4-4.png");
+  background-image: url("/images/slider-hm4-4.webp");
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;

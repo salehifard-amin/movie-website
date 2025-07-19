@@ -1,4 +1,4 @@
-import { Button, Popover } from "antd";
+import { Button } from "antd";
 import { SubscribeStyled } from "./styled";
 import MessageAntd from "../AuxiliaryComponents/MessageAntd";
 

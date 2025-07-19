@@ -1,6 +1,6 @@
 import { message } from "antd";
 
-const MessageAntd = ({ children }) => {
+const MessageAntd = ({ children}) => {
   const [messageApi, contextHolder] = message.useMessage();
   const showAlert = () => {
     messageApi.info("This is a Demo version");
@@ -12,5 +12,4 @@ const MessageAntd = ({ children }) => {
     </>
   );
 };
-
 export default MessageAntd;

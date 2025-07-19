@@ -4,6 +4,12 @@ const { small, medium, large, xLarge } = primaryTheme.viewports;
 
 export const HeroContainer = styled.div`
   margin-bottom: 30px;
+  max-width: 1280px;
+  margin: 0 auto;
+  min-height: 380px;
+  @media screen and (orientation: landscape) and (min-height: ${small}) {
+  /* min-height: 800px; */
+  }
 `;
 
 export const HeroStyled = styled.div`
@@ -34,31 +40,37 @@ export const HeroStyled = styled.div`
     }
   }
   .hero-title {
-    display: block;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
     position: absolute;
-    top: 10%;
-    left: 3%;
+    top: 12%;
+    left: 8%;
     color: #eaeadd;
     margin-top: 4%;
-    width: 100%;
-    padding: 0 5px;
+    width: 90%;
+    padding: 0 28px 0 5px;
+    min-height: 140px;
     @media screen and (max-width: ${small}) {
-      top: 3%;
+      top: 10%;
+    }
+    @media screen and (orientation: landscape) and (max-width: ${small}) {
+      top: 0;
     }
   }
   .hero-title h2 {
-    font-size: ${({ $fontProps }) => $fontProps};
+    font-size: ${({ $fontProps }) => $fontProps || "70px"};
     text-shadow: 1px 2px 6px black;
     @media screen and (max-width: ${large}) {
       font-size: 45px;
     }
     @media screen and (max-width: ${medium}) {
-      font-size: 35px;
+      font-size: 24px;
     }
   }
   .hero-genres {
     position: absolute;
-    top: 83%;
+    top: 90%;
     left: 10px;
     font-size: 20px;
     color: #fff;
@@ -77,7 +89,7 @@ export const HeroStyled = styled.div`
   }
   .watch-button {
     position: absolute;
-    top: 150%;
+    top: 90%;
     left: 0%;
     font-size: 28px;
     font-weight: bold;
